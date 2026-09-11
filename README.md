@@ -46,7 +46,6 @@ Our solution is an **AI-assisted student workload and capacity management mobile
 ### 1.5 References
 - [Barbayannis, G. et al. (2022). Academic Stress and Mental Well-Being in College Students: Correlations, Affected Groups, and COVID-19. PMC9169886.](https://pmc.ncbi.nlm.nih.gov/articles/PMC9169886/)
 - [Beyond Blue: How to deal with assignment & university anxiety](https://forums.beyondblue.org.au/t5/anxiety/how-to-deal-with-assignment-university-anxiety/td-p/622204)
-- [American College Health Association (ACHA-NCHA III). National College Health Assessment.](https://www.acha.org/NCHA/)
 
 ---
 
