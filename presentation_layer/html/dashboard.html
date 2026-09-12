@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Workload &amp; Capacity Management | Mobile Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <!-- Mobile Device Shell — All screens live inside this container -->
+  <div class="device-container" id="deviceMockup">
+
+    <!-- Dynamic Island & Status Bar -->
+    <div class="notch-island">
+      <div class="island-dot"></div>
+    </div>
+
+    <div class="status-bar">
+      <span>9:41</span>
+    </div>
+
+    <!-- Scrollable App Viewport — active screen content lives here -->
+    <div class="app-viewport" id="viewportScroll">
+
+      <!-- ====================================================================
+           SCREEN: DASHBOARD (home tab)
+           Source fragment: dashboard.html
+           ==================================================================== -->
+      <div id="screenDashboard" class="app-screen active">
+
+      <!-- Top Header: Companion Mascot & Greeting -->
+      <header class="app-header">
+        <div class="companion-header-group">
+          <div class="companion-mascot-avatar" id="companionAvatar" onclick="tapCompanion()" title="Tap your workload buddy!">
+            <svg width="42" height="42" viewBox="0 0 44 44" fill="none">
+              <rect x="6" y="10" width="32" height="28" rx="14" fill="var(--primary)" />
+              <path d="M16 10V7a6 6 0 0 1 12 0v3" stroke="var(--primary)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+              <rect x="10" y="14" width="24" height="20" rx="10" fill="var(--bg-canvas)" />
+              <circle id="mascotEyeL" cx="17" cy="22" r="2.2" fill="var(--primary)" />
+              <circle id="mascotEyeR" cx="27" cy="22" r="2.2" fill="var(--primary)" />
+              <path id="mascotMouth" d="M19 26c1.2 1.5 4.8 1.5 6 0" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" fill="none" />
+              <circle cx="14" cy="24" r="1.5" fill="var(--color-danger)" opacity="0.6"/>
+              <circle cx="30" cy="24" r="1.5" fill="var(--color-danger)" opacity="0.6"/>
+            </svg>
+            <div class="companion-mood-dot busy" id="companionMoodDot" title="Packy: Busy"></div>
+          </div>
+
+          <div class="user-greeting-block">
+            <h2>
+              <span>Hi, Alex!</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+              </svg>
+            </h2>
+            <p id="companionSpeech">Your workload buddy says you're doing okay!</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="icon-btn" onclick="openNotificationsModal()" title="Supportive Notifications">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <div class="badge-count"></div>
+          </button>
+        </div>
+      </header>
+
+      <!-- Card 1: Today's Backpack -->
+      <section class="dashboard-card" id="workloadCard">
+        <div class="card-header-row">
+          <div class="card-title-meta">
+            <div class="card-icon-box">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-9z"></path>
+                <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
+                <path d="M8 14h8"></path>
+                <path d="M12 11v6"></path>
+              </svg>
+            </div>
+            <div class="card-title-text">
+              <h3>Today's Backpack</h3>
+            </div>
+          </div>
+          <span class="status-subtext" id="workloadStatusSub">85% Full</span>
+        </div>
+
+        <div class="backpack-hero-row">
+          <div class="workload-gauge-container">
+            <svg viewBox="0 0 100 100">
+              <circle class="workload-gauge-bg" cx="50" cy="50" r="39"></circle>
+              <circle class="workload-gauge-progress" id="gaugeCircle" cx="50" cy="50" r="39"></circle>
+            </svg>
+            <div class="gauge-center-content">
+              <span class="gauge-pct" id="workloadPercentText">85%</span>
+              <span class="gauge-sub">Load</span>
+            </div>
+          </div>
+
+          <div class="backpack-stats-col">
+            <div class="hero-load-numbers">
+              <div class="load-stat-item">
+                <span class="stat-big-num" id="hoursText">6.8h</span>
+                <span class="stat-sub-label">carried today</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="load-stat-item">
+                <span class="stat-big-num green" id="remainingCapacityText">1.2h</span>
+                <span class="stat-sub-label">buffer left</span>
+              </div>
+            </div>
+            <div class="capacity-progress-track">
+              <div class="capacity-progress-fill" id="statBarFill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="backpack-breakdown-list">
+          <div class="breakdown-item">
+            <div class="breakdown-label"><span class="breakdown-dot academic"></span><span>Academic</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill academic" style="width: 51%;"></div></div>
+            <span class="breakdown-val">3.5h</span>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label"><span class="breakdown-dot work"></span><span>Work</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill work" style="width: 22%;"></div></div>
+            <span class="breakdown-val">1.5h</span>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label"><span class="breakdown-dot group"></span><span>Group</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill group" style="width: 15%;"></div></div>
+            <span class="breakdown-val">1.0h</span>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label"><span class="breakdown-dot personal"></span><span>Personal</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill personal" style="width: 12%;"></div></div>
+            <span class="breakdown-val">0.8h</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card 2: Capacity Risk -->
+      <section class="dashboard-card" id="capacityRiskCard">
+        <div class="card-header-row">
+          <div class="card-title-meta">
+            <div class="card-icon-box risk">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="card-title-text"><h3>Capacity Risk</h3></div>
+          </div>
+          <span class="status-subtext" id="riskLevelText" onclick="openRiskExplainModal()" title="Tap for mathematical breakdown" style="cursor: pointer; color: var(--color-danger); font-weight: 700;">HIGH</span>
+        </div>
+
+        <div class="risk-hero-meter-block">
+          <div class="risk-hero-score-row">
+            <span class="risk-hero-score" id="riskPressureScore">97%</span>
+            <span class="risk-hero-label">capacity pressure</span>
+          </div>
+          <div class="risk-pressure-track">
+            <div class="risk-pressure-fill" id="riskPressureFill" style="width: 97%;"></div>
+            <div class="risk-pressure-pin" id="riskPressurePin" style="left: 97%;"></div>
+          </div>
+        </div>
+
+        <div class="risk-signals-grid">
+          <div class="risk-signal-item">
+            <div class="signal-icon-bubble red">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="signal-info">
+              <span class="signal-val">2 due</span>
+              <span class="signal-sub">&lt; 48h</span>
+            </div>
+          </div>
+          <div class="risk-signal-item">
+            <div class="signal-icon-bubble amber">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+            </div>
+            <div class="signal-info">
+              <span class="signal-val">3 days</span>
+              <span class="signal-sub">&gt; 80% load</span>
+            </div>
+          </div>
+          <div class="risk-signal-item">
+            <div class="signal-icon-bubble green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <div class="signal-info">
+              <span class="signal-val">1.2h left</span>
+              <span class="signal-sub">buffer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="risk-actions-row">
+          <button class="link-action-btn" onclick="openRiskExplainModal()" type="button">Why this risk? →</button>
+          <button class="btn-rebalance-pill" onclick="openRebalanceModal()" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <span>Rebalance</span>
+          </button>
+        </div>
+      </section>
+      </div> <!-- End screenDashboard -->
+
+      <!-- ====================================================================
+           SCREEN: TASK LIST (task tab)
+           ==================================================================== -->
+      <div id="screenTaskList" class="app-screen" style="display: none;">
+
+        <!-- Top Header for Task List -->
+        <header class="app-header task-header">
+          <div class="task-header-title-wrap">
+            <h2>Task List</h2>
+            <div class="task-header-subtitle" id="taskSubtitle">Today · 6 tasks</div>
+          </div>
+        </header>
+
+        <!-- Time Horizon Selector (Today, This Week, This Month) -->
+        <div class="time-horizon-container">
+          <div class="time-horizon-selector" role="tablist">
+            <button class="horizon-pill active" id="horizonBtnToday" onclick="setTimeHorizon('today')">Today</button>
+            <button class="horizon-pill" id="horizonBtnWeek" onclick="setTimeHorizon('week')">This Week</button>
+            <button class="horizon-pill" id="horizonBtnMonth" onclick="setTimeHorizon('month')">This Month</button>
+          </div>
+        </div>
+
+        <!-- Calendar View (Week 7-day strip or Month calendar grid) -->
+        <div class="calendar-card" id="calendarSection" style="display: none;">
+          <div class="calendar-header-row">
+            <div class="cal-title-group">
+              <span class="cal-badge-label" id="calendarScopeLabel">Week View</span>
+              <h4 class="cal-month-title" id="calendarMonthTitle">September 2026</h4>
+            </div>
+            <button class="cal-reset-btn" id="calResetBtn" onclick="resetCalendarFilter()" title="Show all in view">View All</button>
+          </div>
+          <div id="calendarViewMount">
+            <!-- Rendered dynamically by JS: 7-day strip or Month grid -->
+          </div>
+        </div>
+
+        <!-- Category Filter Bar (Assignment, Part time job, Social, Errands, Exercise, Gaming, + Add) -->
+        <div class="category-filter-section">
+          <div class="category-filter-header">
+            <span class="filter-title">Filter by Category</span>
+            <span class="filter-count" id="taskCountBadge">6 tasks</span>
+          </div>
+          <div class="category-filter-scroll" id="categoryChipsContainer">
+            <!-- Generated dynamically by JS -->
+          </div>
+        </div>
+
+        <!-- Task Cards Container -->
+        <div class="task-list-section" id="taskListContainer">
+          <!-- Rendered dynamically by JS -->
+        </div>
+
+      </div> <!-- End screenTaskList -->
+
+      <!-- ====================================================================
+           SCREEN: GROUP & ASSIGNMENTS (group tab)
+           ==================================================================== -->
+      <div id="screenGroupAssignment" class="app-screen" style="display: none;">
+
+        <!-- Top Header for Group Screen -->
+        <header class="app-header group-header">
+          <div class="group-header-title-wrap">
+            <h2>Group &amp; Projects</h2>
+            <div class="group-header-subtitle" id="groupSubtitle">3 Active Projects · 1 Urgent</div>
+          </div>
+          <button class="btn-add-assignment-pill" onclick="openAddAssignmentModal()" type="button" title="Create New Project or Assignment">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>New</span>
+          </button>
+        </header>
+
+        <!-- Filter Pills Bar -->
+        <div class="group-filter-pills" role="tablist">
+          <button class="group-tab-pill active" id="filterGroupAll" onclick="filterGroupAssignments('all', this)">All Projects</button>
+          <button class="group-tab-pill" id="filterGroupInProgress" onclick="filterGroupAssignments('in_progress', this)">In Progress</button>
+          <button class="group-tab-pill" id="filterGroupReview" onclick="filterGroupAssignments('review', this)">Review</button>
+          <button class="group-tab-pill" id="filterGroupCompleted" onclick="filterGroupAssignments('completed', this)">Completed</button>
+        </div>
+
+        <!-- Assignment Cards Container -->
+        <div class="assignment-list-container" id="assignmentListMount">
+          <!-- Rendered dynamically by JS -->
+        </div>
+
+      </div> <!-- End screenGroupAssignment -->
+
+      <!-- ====================================================================
+           SCREEN: ASSIGNMENT DETAIL PAGE (Dedicated Mobile Screen)
+           ==================================================================== -->
+      <div id="screenAssignmentDetail" class="app-screen" style="display: none;">
+        <!-- Top Nav Header with Back Button -->
+        <header class="app-header detail-page-header">
+          <button class="btn-screen-back" onclick="closeAssignmentDetailScreen()" type="button" aria-label="Back to projects">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Projects</span>
+          </button>
+          <div class="detail-page-header-actions" id="detailPageHeaderActions">
+            <!-- Rendered dynamically (status pill) -->
+          </div>
+        </header>
+
+        <!-- Dynamic Assignment Detail Body Container -->
+        <div class="assignment-detail-page-content" id="assignmentDetailPageContent">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </div> <!-- End screenAssignmentDetail -->
+
+      <!-- ====================================================================
+           SCREEN: ADD NEW PROJECT / ASSIGNMENT (Dedicated Screen)
+           ==================================================================== -->
+      <div id="screenAddAssignment" class="app-screen add-asg-screen" style="display: none;">
+        <!-- Top Nav Header with Back Button and Title on Next Line -->
+        <header class="app-header add-asg-header">
+          <div class="add-asg-nav-row">
+            <button class="btn-screen-back" onclick="handleAddAsgBack()" type="button" aria-label="Back to projects">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              <span>Back</span>
+            </button>
+          </div>
+          <div class="add-asg-header-title-block">
+            <h3>New Project / Assignment</h3>
+            <p>Set up coursework via AI parsing</p>
+          </div>
+        </header>
+
+        <!-- Scrollable Add Assignment Body Container -->
+        <div class="add-asg-body" id="addAsgBody">
+          <!-- Choose Input Method: Document Upload OR Text Input -->
+          <div class="asg-input-mode-card">
+            <div class="asg-mode-tabs" role="tablist">
+              <button type="button" class="asg-mode-tab-btn active" id="asgModeBtnUpload" onclick="setAsgInputMode('upload')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span>Upload Document</span>
+              </button>
+              <button type="button" class="asg-mode-tab-btn" id="asgModeBtnText" onclick="setAsgInputMode('text')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span>Type / Paste Text</span>
+              </button>
+            </div>
+
+            <!-- Mode 1: Document Upload Panel -->
+            <div class="asg-mode-panel" id="asgPanelUpload">
+              <div class="upload-zone" id="asgUploadZone" onclick="triggerAsgFileUpload()">
+                <input type="file" id="asgFileInput" accept=".pdf" multiple style="display: none;" onchange="handleAsgFileUpload(event)">
+                <div class="upload-zone-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                  </svg>
+                </div>
+                <div class="upload-zone-content">
+                  <span class="upload-zone-title">Upload PDF Brief</span>
+                  <span class="upload-zone-subtitle" id="asgUploadSubtitle">Tap to select coursework PDF (max 3)</span>
+                </div>
+              </div>
+              <!-- Uploaded Files Chip Tray -->
+              <div class="uploaded-files-tray" id="asgUploadedFilesTray" style="display: none;"></div>
+            </div>
+
+            <!-- Mode 2: Text / Brief Input Panel -->
+            <div class="asg-mode-panel" id="asgPanelText" style="display: none;">
+              <textarea id="addAsgQuestionInput" class="form-input add-asg-question-box" rows="3" placeholder="Paste assignment brief, problem prompt, or rubric guidelines..." oninput="handleAsgTextInput()"></textarea>
+            </div>
+          </div>
+
+          <!-- Assignment Title Input -->
+          <div class="form-group">
+            <label for="addAsgTitleInput">Assignment Title</label>
+            <input type="text" id="addAsgTitleInput" class="form-input" placeholder="Auto-filled by AI or enter...">
+          </div>
+
+          <!-- 2-Column Fields Row: Due Date + Team Members -->
+          <div class="add-asg-fields-row">
+            <div class="form-group">
+              <label for="addAsgDueDateInput">Due Date</label>
+              <input type="date" id="addAsgDueDateInput" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label>Team Members</label>
+              <div class="member-counter-box compact">
+                <button type="button" class="counter-btn" onclick="updateMemberCount(-1)" aria-label="Decrease members">−</button>
+                <span class="counter-value" id="asgMemberCountDisplay">1</span>
+                <button type="button" class="counter-btn" onclick="updateMemberCount(1)" aria-label="Increase members">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analyse with AI CTA Button (Smaller Text & Compact) -->
+          <div class="add-asg-analyse-wrap">
+            <button type="button" class="btn-action-primary btn-analyse" id="btnAnalyseAi" onclick="runAiAnalyse()" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+              </svg>
+              <span id="btnAnalyseText">Analyse with AI</span>
+            </button>
+            <p class="analyse-helper-note" id="analyseHelperNote">Upload a PDF or enter text brief to unlock AI analysis</p>
+          </div>
+
+          <!-- AI Task Breakdown Section (hidden until analyse completes) -->
+          <div class="task-breakdown-section" id="taskBreakdownSection" style="display: none;">
+            <div class="task-breakdown-header">
+              <div class="breakdown-title-wrap">
+                <span class="breakdown-badge">AI Suggested</span>
+                <h4>Task Breakdown &amp; Roles</h4>
+              </div>
+            </div>
+
+            <!-- Task Breakdown List Container -->
+            <div class="breakdown-task-list" id="breakdownTaskList">
+              <!-- Dynamically populated rows -->
+            </div>
+
+            <!-- + Add Task Button -->
+            <button type="button" class="breakdown-add-task-btn" onclick="addBreakdownTask()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Add Task</span>
+            </button>
+          </div>
+
+          <!-- Bottom Action Footer Bar -->
+          <div class="add-asg-footer-bar">
+            <button type="button" class="btn-action-secondary btn-asg-cancel" onclick="openCancelConfirmModal()">Cancel</button>
+            <button type="button" class="btn-action-primary btn-asg-create" onclick="handleCreateAssignmentFromScreen()">
+              <span>Create Assignment</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div> <!-- End screenAddAssignment -->
+
+      <!-- ====================================================================
+           SCREEN: NEW DAILY TASK (DEDICATED FULL SCREEN)
+           ==================================================================== -->
+      <div class="app-screen screen-add-daily-task" id="screenAddDailyTask" style="display: none;">
+
+        <!-- Top Nav Header with Back Button and Title -->
+        <header class="app-header add-daily-header">
+          <button type="button" class="btn-screen-back" onclick="hideAddDailyTaskScreen()" aria-label="Go back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back</span>
+          </button>
+          <div class="add-daily-header-title-block">
+            <h3>New Daily Task</h3>
+            <p>Schedule focused blocks &amp; protect cognitive capacity</p>
+          </div>
+        </header>
+
+        <!-- Scrollable Body -->
+        <div class="add-daily-body" id="addDailyBody">
+
+          <!-- Voice Quick-Fill Banner -->
+          <div class="daily-task-voice-bar" id="dailyTaskVoiceBar">
+            <button type="button" class="voice-mic-btn" id="dailyTaskVoiceBtn" onclick="toggleDailyTaskVoiceRecording()" title="Speak task details">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+            <div class="voice-bar-text">
+              <div class="voice-bar-title" id="voiceStatusText">Voice Quick-Fill</div>
+              <div class="voice-bar-hint" id="voiceHintText">Tap mic &middot; e.g. "Review CS301 from 2pm to 3:30pm"</div>
+            </div>
+            <div class="voice-wave-container" id="voiceWaveAnim" style="display: none;">
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form id="dailyTaskForm" onsubmit="handleCreateDailyTask(event)">
+
+            <!-- CARD 1: Task Name -->
+            <div class="daily-form-card">
+              <div class="daily-card-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                <span>Task Name <span class="daily-required-star">*</span></span>
+              </div>
+              <div class="daily-input-wrap">
+                <input type="text" id="dailyTaskTitleInput" class="daily-text-input" placeholder="e.g. Complete CS301 Lecture Notes" required autocomplete="off">
+                <button type="button" class="inline-mic-btn" onclick="toggleDailyTaskVoiceRecording()" title="Dictate task name">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- CARD 2: Category -->
+            <div class="daily-form-card">
+              <div class="daily-card-label-row">
+                <div class="daily-card-label">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                  </svg>
+                  <span>Category <span class="daily-required-star">*</span></span>
+                </div>
+                <button type="button" class="btn-inline-add-cat" onclick="toggleNewCategoryForm()">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>Add Category</span>
+                </button>
+              </div>
+              <div class="daily-cat-chips-wrap" id="dailyTaskCatChips">
+                <!-- Rendered via JS -->
+              </div>
+              <div class="new-category-inline-box" id="newCategoryInlineBox" style="display: none;">
+                <!-- Category Name -->
+                <div class="new-cat-field">
+                  <label class="new-cat-field-label" for="newCategoryNameInput">Category Name</label>
+                  <input type="text" id="newCategoryNameInput" class="new-cat-text-input" placeholder="e.g. Reading, Gym, Research" autocomplete="off">
+                </div>
+                <!-- Colour -->
+                <div class="new-cat-field">
+                  <span class="new-cat-field-label">Colour</span>
+                  <div class="new-cat-color-picker" id="newCatColorPicker">
+                    <span class="color-dot active" data-color="purple" style="background: #7A5AF8;" onclick="selectCategoryColor(this, 'purple')" title="Purple"></span>
+                    <span class="color-dot" data-color="blue" style="background: #3B82F6;" onclick="selectCategoryColor(this, 'blue')" title="Blue"></span>
+                    <span class="color-dot" data-color="green" style="background: #10B981;" onclick="selectCategoryColor(this, 'green')" title="Green"></span>
+                    <span class="color-dot" data-color="amber" style="background: #F59E0B;" onclick="selectCategoryColor(this, 'amber')" title="Amber"></span>
+                    <span class="color-dot" data-color="coral" style="background: #F06A6A;" onclick="selectCategoryColor(this, 'coral')" title="Coral"></span>
+                    <span class="color-dot" data-color="pink" style="background: #EC4899;" onclick="selectCategoryColor(this, 'pink')" title="Pink"></span>
+                  </div>
+                </div>
+                <!-- Cancel | Save -->
+                <div class="new-cat-btn-row">
+                  <button type="button" class="btn-new-cat-cancel" onclick="toggleNewCategoryForm(false)">Cancel</button>
+                  <button type="button" class="btn-new-cat-save" onclick="saveNewCustomCategory()">Save</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 3: Date & Time -->
+            <div class="daily-form-card">
+              <div class="daily-card-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Date &amp; Time <span class="daily-required-star">*</span></span>
+              </div>
+              <div class="daily-date-wrap">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <input type="date" id="dailyTaskDateInput" class="daily-date-input" required>
+              </div>
+              <div class="daily-card-divider"></div>
+              <div class="daily-time-row">
+                <div class="daily-time-col">
+                  <span class="daily-time-sublabel">Start Time</span>
+                  <div class="daily-time-input-wrap">
+                    <input type="time" id="dailyTaskStartTime" class="daily-time-input" value="14:00" required onchange="updateDailyTaskDuration()">
+                  </div>
+                </div>
+                <span class="daily-time-divider">&#8211;</span>
+                <div class="daily-time-col">
+                  <span class="daily-time-sublabel">End Time</span>
+                  <div class="daily-time-input-wrap">
+                    <input type="time" id="dailyTaskEndTime" class="daily-time-input" value="15:30" required onchange="updateDailyTaskDuration()">
+                  </div>
+                </div>
+              </div>
+              <div class="daily-duration-bar">
+                <span class="duration-preset-label">Quick set:</span>
+                <div class="daily-duration-pills-row">
+                  <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(30)">+30m</button>
+                  <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(45)">+45m</button>
+                  <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(60)">+1h</button>
+                  <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(90)">+1.5h</button>
+                  <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(120)">+2h</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="add-daily-footer-bar">
+              <button type="button" class="btn-action-secondary btn-daily-cancel" onclick="hideAddDailyTaskScreen()">Cancel</button>
+              <button type="submit" class="btn-action-primary btn-daily-create" id="btnSubmitDailyTask">
+                <span>Add Daily Task</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div> <!-- End screenAddDailyTask -->
+
+    </div> <!-- End app-viewport -->
+
+    <!-- Bottom Mobile Dock Navigation -->
+    <nav class="mobile-bottom-dock" id="bottomNavDock">
+      <div class="dock-tab active" onclick="switchNavTab(this, 'home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Home</span>
+      </div>
+
+      <div class="dock-tab" onclick="switchNavTab(this, 'task')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="9 11 12 14 22 4"></polyline>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+        <span>Task</span>
+      </div>
+
+      <!-- Center FAB — opens Quick Add modal -->
+      <div class="dock-center-fab" id="dockFabBtn" onclick="openQuickAddModal()" title="Add Task / Multi-Modal Input">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </div>
+
+      <div class="dock-tab" onclick="switchNavTab(this, 'group')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span>Group</span>
+      </div>
+
+      <div class="dock-tab" onclick="switchNavTab(this, 'profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Profile</span>
+      </div>
+    </nav>
+
+    <!-- iOS Home Indicator -->
+    <div class="home-indicator"></div>
+
+    <!-- Live Toast Notification -->
+    <div class="toast-popup" id="appToast">
+      <div class="toast-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <div class="toast-content" id="toastMessage">Home selected</div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: QUICK ADD (+ BUTTON)
+         ==================================================================== -->
+    <div class="modal-overlay" id="quickAddModal">
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div>
+            <h3>Quick Capture &amp; Planning</h3>
+            <p style="font-size: 11px; color: var(--primary); margin-top: 2px; opacity: 0.85;">
+              Protect cognitive load with frictionless scheduling
+            </p>
+          </div>
+          <button class="close-btn" onclick="closeQuickAddModal()" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="quick-action-grid">
+          <div class="quick-action-btn" onclick="handleQuickAction('add_daily_task')">
+            <div class="quick-action-icon" style="color: var(--primary); background: var(--primary-light);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <path d="M9 16l2 2 4-4"></path>
+              </svg>
+            </div>
+            <div class="quick-action-info">
+              <h5>New Daily Task</h5>
+              <p>Schedule daily routines, study blocks, errands, habits &amp; voice input.</p>
+            </div>
+          </div>
+
+          <div class="quick-action-btn" onclick="handleQuickAction('upload_assignment')">
+            <div class="quick-action-icon" style="color: var(--domain-work); background: var(--domain-work-bg);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <div class="quick-action-info">
+              <h5>New Project / Assignment</h5>
+              <p>Decompose syllabus rubric into phased milestones &amp; team tasks.</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-action-primary" style="margin-top: 14px;" onclick="closeQuickAddModal()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: AI SCHEDULE REBALANCER
+         ==================================================================== -->
+    <div class="modal-overlay" id="rebalanceModal">
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div>
+            <h3 style="margin: 0;">AI Schedule Rebalancer</h3>
+            <p style="font-size: 11px; color: var(--primary); margin-top: 2px; opacity: 0.85;">
+              Guilt-free proactive workload redistributor
+            </p>
+          </div>
+          <button class="close-btn" onclick="closeRebalanceModal()" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div style="background: var(--color-danger-bg); border: 1px solid var(--color-danger-border); border-radius: 14px; padding: 12px 14px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--color-danger); display: flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            </svg>
+            <span>Friday Bottleneck Detected (92% load)</span>
+          </div>
+          <p style="font-size: 11px; color: var(--primary); margin: 6px 0 0 0; line-height: 1.4;">
+            Friday has 7.4h scheduled against 8.0h capacity with 2 approaching deadlines, triggering high burnout vulnerability.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <h5 style="font-size: 12px; font-weight: 700; color: var(--primary); margin: 0;">AI Suggested Rebalancing Plan:</h5>
+
+          <div class="factor-item">
+            <div class="factor-header">
+              <div class="factor-icon" style="background: var(--domain-academic-bg); color: var(--primary);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+              </div>
+              <h5 class="factor-title">Shift Draft Literature Review (1.5h)</h5>
+            </div>
+            <p class="factor-desc">Move from Friday afternoon to Saturday 10:00 AM (restorative buffer slot).</p>
+          </div>
+
+          <div class="factor-item">
+            <div class="factor-header">
+              <div class="factor-icon" style="background: var(--color-success-bg); color: var(--color-success);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <h5 class="factor-title">Insert 45m Restorative Down Time</h5>
+            </div>
+            <p class="factor-desc">Protects Friday evening from cognitive exhaustion without academic penalty.</p>
+          </div>
+        </div>
+
+        <div style="background: var(--color-success-soft-bg); border: 1px solid var(--color-success-border); border-radius: 12px; padding: 10px 12px; font-size: 11.5px; color: var(--color-success); font-weight: 600;">
+          Result: Friday projected load drops to <strong>72% (5.9h)</strong> — Safe capacity restored.
+        </div>
+
+        <button class="btn-action-primary" onclick="confirmRebalance()">Confirm AI Rebalance</button>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: CAPACITY RISK EXPLAINABILITY
+         ==================================================================== -->
+    <div class="modal-overlay" id="riskExplainModal">
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div>
+            <h3 style="margin: 0;">Capacity Risk Breakdown</h3>
+            <p style="font-size: 11px; color: var(--primary); margin-top: 2px; opacity: 0.85;">
+              Objective mathematical workload risk formula
+            </p>
+          </div>
+          <button class="close-btn" onclick="closeRiskExplainModal()" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; background: var(--primary-faint); padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+          <span style="font-size: 12px; color: var(--primary); font-weight: 700;">Overall Risk Score:</span>
+          <span class="status-subtext" style="font-weight: 700; color: var(--color-danger); opacity: 1;">High (85%)</span>
+        </div>
+
+        <div class="factor-item">
+          <div class="factor-header">
+            <div class="factor-icon" style="background: var(--color-danger-bg); color: var(--color-danger-dark);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#BE123C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h5 class="factor-title">1. Deadline Pressure</h5>
+            <div class="factor-value" style="background: var(--color-danger-bg); color: var(--color-danger-dark);">HIGH</div>
+          </div>
+          <p class="factor-desc">2 major deliverables due within 48 hours (CS421 Raft &amp; HCI Paper Draft).</p>
+        </div>
+
+        <div class="factor-item">
+          <div class="factor-header">
+            <div class="factor-icon" style="background: var(--color-warning-bg); color: var(--color-warning-dark);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+            </div>
+            <h5 class="factor-title">2. Consecutive High-Load Days</h5>
+            <div class="factor-value" style="background: var(--color-warning-bg); color: var(--color-warning-dark);">3 DAYS</div>
+          </div>
+          <p class="factor-desc">Today is day 3 of planned workload &gt; 80%. Continuous load elevates fatigue risk.</p>
+        </div>
+
+        <div class="factor-item">
+          <div class="factor-header">
+            <div class="factor-icon" style="background: var(--domain-academic-bg); color: var(--primary);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </div>
+            <h5 class="factor-title">3. Task Carryover</h5>
+            <div class="factor-value" style="background: var(--domain-academic-bg); color: var(--primary);">1 TASK</div>
+          </div>
+          <p class="factor-desc">1 uncompleted task carried over from yesterday without penalty.</p>
+        </div>
+
+        <div class="factor-item">
+          <div class="factor-header">
+            <div class="factor-icon" style="background: var(--color-success-bg); color: var(--color-success);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h5 class="factor-title">4. Buffer Deficit</h5>
+            <div class="factor-value" style="background: var(--color-warning-bg); color: var(--color-warning-dark);">1.2h LEFT</div>
+          </div>
+          <p class="factor-desc">Remaining buffer is 1.2h (sustainable target is &gt; 2.0h).</p>
+        </div>
+
+        <div style="background: var(--primary-faint); border-radius: 12px; padding: 10px 12px; border: 1px dashed var(--border-focus); display: flex; flex-direction: column; gap: 4px;">
+          <div style="font-size: 11.5px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 5px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <span>AI Workload Suggestion</span>
+          </div>
+          <p style="font-size: 11px; color: var(--primary); margin: 0; line-height: 1.35; opacity: 0.85;">
+            Shift Literature Review (1.5h) to Saturday to restore a 2.0h safe restorative buffer.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 2px;">
+          <button class="btn-action-primary" style="flex: 1;" onclick="closeRiskExplainModal(); openRebalanceModal();">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <span>Rebalance My Workload</span>
+          </button>
+          <button class="close-btn" style="width: auto; height: auto; border-radius: 12px; padding: 8px 14px; font-size: 11.5px;" onclick="closeRiskExplainModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: SUPPORTIVE NOTIFICATIONS
+         ==================================================================== -->
+    <div class="modal-overlay" id="notificationsModal">
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div>
+            <h3 style="margin: 0;">Supportive Nudges</h3>
+            <p style="font-size: 11px; color: var(--primary); margin-top: 2px; opacity: 0.85;">
+              Device-local, non-punitive capacity reminders
+            </p>
+          </div>
+          <button class="close-btn" onclick="closeNotificationsModal()" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="nudge-card">
+          <div class="nudge-header">
+            <div class="factor-icon" style="background: var(--domain-academic-bg); color: var(--primary);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h5 class="nudge-title">Guilt-Free Down Time Shield</h5>
+          </div>
+          <p class="nudge-desc">Friday 8:00 PM – Sunday 10:00 AM reserved for rest. No high-stress tasks will be scheduled here.</p>
+          <span class="nudge-time">Active · Just now</span>
+        </div>
+
+        <div class="nudge-card">
+          <div class="nudge-header">
+            <div class="factor-icon" style="background: var(--color-success-bg); color: var(--color-success);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                <line x1="6" y1="1" x2="6" y2="4"></line>
+                <line x1="10" y1="1" x2="10" y2="4"></line>
+                <line x1="14" y1="1" x2="14" y2="4"></line>
+              </svg>
+            </div>
+            <h5 class="nudge-title">Recovery Break Reminder</h5>
+          </div>
+          <p class="nudge-desc">You've maintained focused attention for 90 minutes. Step away for 10 minutes to protect capacity.</p>
+          <span class="nudge-time">15 mins ago</span>
+        </div>
+
+        <button class="btn-action-primary" onclick="closeNotificationsModal()">Close</button>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: AI SMART RESCHEDULE
+         ==================================================================== -->
+    <div class="modal-overlay" id="rescheduleModal">
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div>
+            <h3 style="margin: 0;">AI Smart Reschedule</h3>
+            <p style="font-size: 11px; color: var(--primary); margin-top: 2px; opacity: 0.85;">
+              Protect cognitive load & find the optimal date
+            </p>
+          </div>
+          <button class="close-btn" onclick="closeRescheduleModal()" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Task Preview Box -->
+        <div id="rescheduleTaskPreview" class="reschedule-task-preview">
+          <!-- Rendered dynamically: Title, Category tag, Current Time & Date -->
+        </div>
+
+        <!-- Packy AI Advisory Banner -->
+        <div class="reschedule-ai-banner">
+          <div class="reschedule-ai-avatar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+          <div class="reschedule-ai-text">
+            <strong>Packy AI Load Optimizer</strong>
+            <p>I evaluated your deadline proximity and energy buffers to propose the 3 best dates with lowest burnout risk.</p>
+          </div>
+        </div>
+
+        <!-- 3 AI Proposed Dates -->
+        <div class="reschedule-section-title">
+          <span>AI Proposed Dates (Top 3 Recommendations)</span>
+        </div>
+        <div id="aiProposedDatesContainer" class="ai-proposed-dates-list">
+          <!-- Dynamically populated 3 cards -->
+        </div>
+
+        <!-- Custom Date & Time Selection -->
+        <div class="reschedule-custom-section">
+          <div class="reschedule-section-title">
+            <span>Or choose desired custom date & time:</span>
+          </div>
+          <div class="reschedule-datetime-grid">
+            <div class="reschedule-date-input-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <input type="date" id="rescheduleCustomDateInput" class="reschedule-date-input" onchange="onCustomDateTimeChanged()">
+            </div>
+            <div class="reschedule-time-row">
+              <div class="reschedule-time-group">
+                <label class="reschedule-time-label">Start Time</label>
+                <div class="reschedule-time-input-wrap">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <input type="time" id="rescheduleCustomStartTime" class="reschedule-time-input" onchange="onCustomStartTimeChanged()">
+                </div>
+              </div>
+              <span class="reschedule-time-separator">–</span>
+              <div class="reschedule-time-group">
+                <label class="reschedule-time-label">End Time</label>
+                <div class="reschedule-time-input-wrap">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <input type="time" id="rescheduleCustomEndTime" class="reschedule-time-input" onchange="onCustomDateTimeChanged()">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Time Collision / Conflict Warning Alert -->
+        <div id="rescheduleCollisionBox" class="reschedule-collision-box" style="display: none;">
+          <!-- Dynamically populated when 2 tasks overlap -->
+        </div>
+
+        <!-- AI Real-Time Impact Analysis Box (shown when custom date/time evaluated) -->
+        <div id="rescheduleImpactBox" class="reschedule-impact-box" style="display: none;">
+          <!-- Dynamically filled with load impact, delta bar, and AI diagnostic -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="modal-actions" style="margin-top: 4px;">
+          <button class="btn-action-primary" id="btnConfirmReschedule" onclick="confirmReschedule()">Confirm Reschedule</button>
+          <button class="btn-action-secondary" onclick="closeRescheduleModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: ADD NEW ASSIGNMENT / PROJECT
+         ==================================================================== -->
+    <div class="modal-overlay" id="addAssignmentModal" role="dialog" aria-modal="true" aria-labelledby="addAssignmentModalTitle">
+      <div class="modal-backdrop" onclick="closeAddAssignmentModal()"></div>
+      <div class="modal-sheet add-assignment-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-header-text">
+            <h3 id="addAssignmentModalTitle">New Project / Assignment</h3>
+            <p>Set up coursework, team collaborators &amp; milestones</p>
+          </div>
+          <button class="close-btn" onclick="closeAddAssignmentModal()" aria-label="Close modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <form class="add-assignment-form" onsubmit="handleCreateAssignment(event)">
+          <div class="form-group">
+            <label for="assignTitleInput">Assignment / Project Title *</label>
+            <input type="text" id="assignTitleInput" class="form-input" placeholder="e.g. Distributed Consensus Engine" required>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label for="assignCourseInput">Course / Code *</label>
+              <input type="text" id="assignCourseInput" class="form-input" placeholder="e.g. CS301 Distributed Systems" required>
+            </div>
+            <div class="form-group">
+              <label for="assignWeightInput">Weightage (%)</label>
+              <input type="number" id="assignWeightInput" class="form-input" placeholder="30" min="1" max="100" value="30">
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label for="assignDueDateInput">Due Date *</label>
+              <input type="date" id="assignDueDateInput" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label for="assignPrioritySelect">Priority / Risk</label>
+              <select id="assignPrioritySelect" class="form-input">
+                <option value="High">High Risk / Urgent</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low / Flexible</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="assignMembersInput">Team Members (comma-separated)</label>
+            <input type="text" id="assignMembersInput" class="form-input" placeholder="e.g. Sarah Chen, Marcus Wong, Alex Rivera">
+            <div class="form-help-hint">Leave blank or write 'Solo' for an individual assignment</div>
+          </div>
+
+          <div class="form-group">
+            <label for="assignMilestonesInput">Initial Milestones (1 per line)</label>
+            <textarea id="assignMilestonesInput" class="form-input form-textarea" rows="3" placeholder="Requirement &amp; Protocol Specification&#10;Core Implementation &amp; Benchmarks&#10;Final Report &amp; Slide Deck"></textarea>
+          </div>
+
+          <div class="modal-actions" style="margin-top: 10px;">
+            <button type="submit" class="btn-action-primary">Create Assignment Project</button>
+            <button type="button" class="btn-action-secondary" onclick="closeAddAssignmentModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: ASSIGNMENT COMPREHENSIVE DETAIL INSPECTOR
+         ==================================================================== -->
+    <div class="modal-overlay" id="assignmentDetailModal" role="dialog" aria-modal="true" aria-labelledby="assignmentDetailTitle">
+      <div class="modal-backdrop" onclick="closeAssignmentDetailModal()"></div>
+      <div class="modal-sheet assignment-detail-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-header-text">
+            <div class="detail-badge-row" id="detailBadgeRow">
+              <!-- Rendered dynamically by JS -->
+            </div>
+            <h3 id="assignmentDetailTitle" class="detail-main-title">Assignment Title</h3>
+          </div>
+          <button class="close-btn" onclick="closeAssignmentDetailModal()" aria-label="Close modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="assignment-detail-body" id="assignmentDetailBody">
+          <!-- Dynamically filled with:
+               1. Progress & Countdown Gauge
+               2. AI Team Workload & Synergy Card
+               3. Team Members with Roles & Activity
+               4. Interactive Milestones Checklist
+               5. Resources & Attachments
+               6. Quick Action Toolbar
+          -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: MILESTONE SUB-TASK INSPECTOR & ASSIGNEE MODAL
+         ==================================================================== -->
+    <div class="modal-overlay" id="milestoneDetailModal" role="dialog" aria-modal="true" aria-labelledby="milestoneModalTitle">
+      <div class="modal-backdrop" onclick="closeMilestoneDetailModal()"></div>
+      <div class="modal-sheet milestone-detail-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-header-text">
+            <div class="detail-badge-row" id="milestoneModalBadgeRow">
+              <!-- Course badge and sync tag -->
+            </div>
+            <h3 id="milestoneModalTitle" class="detail-main-title">Milestone Breakdown</h3>
+            <div id="milestoneModalSubtitle" class="milestone-modal-subtitle">Breakdown task from assignment question</div>
+          </div>
+          <button class="close-btn" onclick="closeMilestoneDetailModal()" aria-label="Close modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="milestone-modal-body" id="milestoneModalBody">
+          <!-- Dynamically populated with what needs to be done, assigned peer, reassign selector -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: AI PROGRESS-ADAPTIVE REORGANISER
+         ==================================================================== -->
+    <div class="modal-overlay" id="aiReorganiseModal" role="dialog" aria-modal="true" aria-labelledby="aiReorganiseModalTitle">
+      <div class="modal-backdrop" onclick="closeAiReorganiseModal()"></div>
+      <div class="modal-sheet ai-reorganise-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-header-text">
+            <div class="detail-badge-row" id="aiReorganiseBadgeRow">
+              <!-- Course badge and AI badge -->
+            </div>
+            <h3 id="aiReorganiseModalTitle" class="detail-main-title">AI Dynamic Task Reorganiser</h3>
+            <div id="aiReorganiseModalSubtitle" class="ai-reorganise-subtitle">Progress-adaptive re-planning for remaining milestones</div>
+          </div>
+          <button class="close-btn" onclick="closeAiReorganiseModal()" aria-label="Close modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="ai-reorganise-modal-body" id="aiReorganiseModalBody">
+          <!-- Dynamically populated with live progress diagnostic, proposed plan, and action buttons -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: CANCEL / DISCARD CONFIRMATION MODAL
+         ==================================================================== -->
+    <div class="modal-overlay" id="cancelConfirmModal" role="dialog" aria-modal="true" aria-labelledby="cancelConfirmTitle">
+      <div class="modal-backdrop" onclick="closeCancelConfirmModal()"></div>
+      <div class="modal-sheet cancel-confirm-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="sheet-header cancel-confirm-header">
+          <div class="sheet-header-text">
+            <h3 id="cancelConfirmTitle">Discard Changes?</h3>
+            <p>Are you sure you want to exit? All uploaded files and parsed tasks will be lost.</p>
+          </div>
+        </div>
+        <div class="cancel-confirm-actions">
+          <button type="button" class="btn-discard" onclick="discardAddAssignment()">Discard</button>
+          <button type="button" class="btn-action-secondary" onclick="closeCancelConfirmModal()">Keep Editing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL: DELETE CONFIRMATION MODAL
+         ==================================================================== -->
+    <div class="modal-overlay" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteConfirmTitle">
+      <div class="modal-backdrop" onclick="closeDeleteConfirmModal()"></div>
+      <div class="modal-sheet cancel-confirm-sheet">
+        <div class="modal-drag-handle"></div>
+        <div class="sheet-header cancel-confirm-header">
+          <div class="sheet-header-text">
+            <h3 id="deleteConfirmTitle">Delete Item?</h3>
+            <p id="deleteConfirmSubtitle">Are you sure you want to delete this? This action cannot be undone.</p>
+          </div>
+        </div>
+        <div class="cancel-confirm-actions">
+          <button type="button" class="btn-discard" id="btnConfirmDeleteAction">Delete</button>
+          <button type="button" class="btn-action-secondary" onclick="closeDeleteConfirmModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End device-container -->
+
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>
