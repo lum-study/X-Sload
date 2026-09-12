@@ -4907,17 +4907,9 @@ function toggleMilestone(assignmentId, milestoneIdx) {
 }
 
 // Toast Utility
-let toastTimeout;
+// Toast messages disabled per user request
 function showToast(msg) {
-  const toast = document.getElementById('appToast');
-  const toastMsg = document.getElementById('toastMessage');
-  if (!toast || !toastMsg) return;
-  toastMsg.innerText = msg;
-  toast.classList.add('visible');
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => {
-    toast.classList.remove('visible');
-  }, 3200);
+  // no-op: all toast notifications removed
 }
 
 // ==========================================================================
