@@ -90,7 +90,7 @@
               <h3>Today's Backpack</h3>
             </div>
           </div>
-          <span class="status-subtext" id="workloadStatusSub">85% Full</span>
+          <span class="status-subtext" id="workloadStatusSub">100% Full</span>
         </div>
 
         <div class="backpack-hero-row">
@@ -100,7 +100,7 @@
               <circle class="workload-gauge-progress" id="gaugeCircle" cx="50" cy="50" r="39"></circle>
             </svg>
             <div class="gauge-center-content">
-              <span class="gauge-pct" id="workloadPercentText">85%</span>
+              <span class="gauge-pct" id="workloadPercentText">100%</span>
               <span class="gauge-sub">Load</span>
             </div>
           </div>
@@ -108,12 +108,12 @@
           <div class="backpack-stats-col">
             <div class="hero-load-numbers">
               <div class="load-stat-item">
-                <span class="stat-big-num" id="hoursText">6.8h</span>
+                <span class="stat-big-num" id="hoursText">8.0h</span>
                 <span class="stat-sub-label">carried today</span>
               </div>
               <div class="stat-divider"></div>
               <div class="load-stat-item">
-                <span class="stat-big-num green" id="remainingCapacityText">1.2h</span>
+                <span class="stat-big-num green" id="remainingCapacityText">0.0h</span>
                 <span class="stat-sub-label">buffer left</span>
               </div>
             </div>
@@ -123,26 +123,26 @@
           </div>
         </div>
 
-        <div class="backpack-breakdown-list">
+        <div class="backpack-breakdown-list" id="backpackBreakdownList">
           <div class="breakdown-item">
-            <div class="breakdown-label"><span class="breakdown-dot academic"></span><span>Academic</span></div>
-            <div class="breakdown-bar-wrap"><div class="mini-bar-fill academic" style="width: 51%;"></div></div>
-            <span class="breakdown-val">3.5h</span>
+            <div class="breakdown-label"><span class="breakdown-dot assignment"></span><span>Assignment</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill assignment" style="width: 31%;"></div></div>
+            <span class="breakdown-val">2.5h</span>
           </div>
           <div class="breakdown-item">
-            <div class="breakdown-label"><span class="breakdown-dot work"></span><span>Work</span></div>
-            <div class="breakdown-bar-wrap"><div class="mini-bar-fill work" style="width: 22%;"></div></div>
+            <div class="breakdown-label"><span class="breakdown-dot part_time_job"></span><span>Part time job</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill part_time_job" style="width: 38%;"></div></div>
+            <span class="breakdown-val">3.0h</span>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label"><span class="breakdown-dot social"></span><span>Social</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill social" style="width: 19%;"></div></div>
             <span class="breakdown-val">1.5h</span>
           </div>
           <div class="breakdown-item">
-            <div class="breakdown-label"><span class="breakdown-dot group"></span><span>Group</span></div>
-            <div class="breakdown-bar-wrap"><div class="mini-bar-fill group" style="width: 15%;"></div></div>
+            <div class="breakdown-label"><span class="breakdown-dot errands"></span><span>Errands</span></div>
+            <div class="breakdown-bar-wrap"><div class="mini-bar-fill errands" style="width: 12%;"></div></div>
             <span class="breakdown-val">1.0h</span>
-          </div>
-          <div class="breakdown-item">
-            <div class="breakdown-label"><span class="breakdown-dot personal"></span><span>Personal</span></div>
-            <div class="breakdown-bar-wrap"><div class="mini-bar-fill personal" style="width: 12%;"></div></div>
-            <span class="breakdown-val">0.8h</span>
           </div>
         </div>
       </section>
@@ -233,7 +233,7 @@
         <header class="app-header task-header">
           <div class="task-header-title-wrap">
             <h2>Task List</h2>
-            <div class="task-header-subtitle" id="taskSubtitle">Today · 6 tasks</div>
+            <div class="task-header-subtitle" id="taskSubtitle">Today · 4 tasks</div>
           </div>
         </header>
 
@@ -260,11 +260,11 @@
           </div>
         </div>
 
-        <!-- Category Filter Bar (Assignment, Part time job, Social, Errands, Exercise, Gaming, + Add) -->
+        <!-- Category Filter Bar (Assignment, Part time job, Social, Errands, + Add) -->
         <div class="category-filter-section">
           <div class="category-filter-header">
             <span class="filter-title">Filter by Category</span>
-            <span class="filter-count" id="taskCountBadge">6 tasks</span>
+            <span class="filter-count" id="taskCountBadge">4 tasks</span>
           </div>
           <div class="category-filter-scroll" id="categoryChipsContainer">
             <!-- Generated dynamically by JS -->
@@ -287,7 +287,7 @@
         <header class="app-header group-header">
           <div class="group-header-title-wrap">
             <h2>Group &amp; Projects</h2>
-            <div class="group-header-subtitle" id="groupSubtitle">3 Active Projects · 1 Urgent</div>
+            <div class="group-header-subtitle" id="groupSubtitle">2 Active Projects · 1 Urgent</div>
           </div>
           <button class="btn-add-assignment-pill" onclick="openAddAssignmentModal()" type="button" title="Create New Project or Assignment">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -610,7 +610,7 @@
                   <line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line>
                   <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
-                <input type="date" id="dailyTaskDateInput" class="daily-date-input" required>
+                <input type="date" id="dailyTaskDateInput" class="daily-date-input" required onchange="updateDailyTaskDuration(); updateDailyTaskImpactPreview();">
               </div>
               <div class="daily-card-divider"></div>
               <div class="daily-time-row">
@@ -636,6 +636,75 @@
                   <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(60)">+1h</button>
                   <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(90)">+1.5h</button>
                   <button type="button" class="duration-pill" onclick="applyDailyTaskDurationPreset(120)">+2h</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 4: Before/After Impact Preview ("Should I Say Yes?") -->
+            <div class="daily-form-card daily-impact-card" id="dailyTaskImpactCard">
+              <!-- Top Header Block -->
+              <div class="daily-impact-top-header">
+                <div class="daily-impact-title-row">
+                  <span class="daily-impact-title-icon">⚡</span>
+                  <span class="daily-impact-main-title">BEFORE/AFTER IMPACT</span>
+                </div>
+                <div class="daily-impact-subtitle">"Should I add this?"</div>
+              </div>
+
+              <!-- Section 1: CAPACITY DELTA -->
+              <div class="daily-impact-section">
+                <div class="daily-impact-section-label">
+                  <span class="impact-section-icon">📊</span>
+                  <span>CAPACITY DELTA</span>
+                </div>
+                <div class="daily-impact-flow-row">
+                  <div class="daily-impact-flow-values">
+                    <span class="impact-val-before font-mono" id="dailyImpactCapBefore">104%</span>
+                    <span class="impact-flow-arrow-line">
+                      <span class="flow-line"></span>
+                      <span class="flow-arrow">&#9654;</span>
+                    </span>
+                    <span class="impact-val-after font-mono" id="dailyImpactCapAfter">123%</span>
+                  </div>
+                  <span class="impact-delta-pill font-mono danger" id="dailyImpactDeltaPill">[+19% / 1.5h]</span>
+                </div>
+                <div class="daily-impact-progress-track">
+                  <div class="daily-impact-fill-baseline" id="dailyImpactFillBaseline" style="width: 85%;"></div>
+                  <div class="daily-impact-fill-delta danger" id="dailyImpactFillDelta" style="width: 19%;"></div>
+                </div>
+              </div>
+
+              <!-- Section 2: BUFFER REDUCTION -->
+              <div class="daily-impact-section">
+                <div class="daily-impact-section-label">
+                  <span class="impact-section-icon">⏳</span>
+                  <span>BUFFER REDUCTION</span>
+                </div>
+                <div class="daily-impact-flow-row">
+                  <div class="daily-impact-flow-values">
+                    <span class="impact-val-before font-mono" id="dailyImpactBufferBefore">0.0h</span>
+                    <span class="impact-flow-arrow-line">
+                      <span class="flow-line"></span>
+                      <span class="flow-arrow">&#9654;</span>
+                    </span>
+                    <span class="impact-val-after font-mono" id="dailyImpactBufferAfter">0.0h</span>
+                  </div>
+                  <span class="impact-reduction-pill font-mono danger" id="dailyImpactBufferPill">[-0.0h]</span>
+                </div>
+                <div class="daily-impact-progress-track buffer-track">
+                  <div class="daily-impact-fill-buffer-remain" id="dailyImpactFillBufferRemain" style="width: 0%;"></div>
+                  <div class="daily-impact-fill-buffer-used" id="dailyImpactFillBufferUsed" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Bottleneck Warning Alert Box (Full-width inner card) -->
+              <div class="daily-impact-alert-box danger" id="dailyImpactBottleneckBox">
+                <div class="impact-alert-header-row">
+                  <span class="impact-alert-icon" id="dailyImpactAlertIcon">⚠️</span>
+                  <span class="impact-alert-title font-mono" id="dailyImpactAlertTitle">Critical Capacity Exceeded (123%)</span>
+                </div>
+                <div class="impact-alert-desc" id="dailyImpactAlertDesc">
+                  Adding this 1.5h task pushes Fri, Sep 11 to 9.8h against your 8.0h limit (0.0h buffer). High burnout risk — consider shortening duration or scheduling on another day.
                 </div>
               </div>
             </div>

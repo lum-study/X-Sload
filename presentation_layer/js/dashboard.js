@@ -1,7 +1,7 @@
 // State Model
 const state = {
   baseCapacityHours: 8.0,
-  currentWorkloadHours: 6.8,
+  currentWorkloadHours: 8.0,
   completedHours: 0,
   activeDomain: 'all',
   simDuration: 2.0,
@@ -36,22 +36,21 @@ const state = {
       priority: 'High',
       isGroup: true,
       members: [
-        { name: 'You', role: 'State Machine & Leader Election', avatar: 'Y', isSelf: true, activeStatus: 'Active today' },
-        { name: 'Sarah Chen', role: 'Log Replication & RPC', avatar: 'SC', isSelf: false, activeStatus: 'Active 3h ago' },
-        { name: 'Marcus Wong', role: 'Benchmarking & Tests', avatar: 'MW', isSelf: false, activeStatus: 'Active 5h ago' },
-        { name: 'Alex Rivera', role: 'Chaos Monkey & Report', avatar: 'AR', isSelf: false, activeStatus: 'Active yesterday' }
+        { name: 'You', role: 'State Machine & Protocol Leader', avatar: 'Y', isSelf: true, activeStatus: 'Active today' },
+        { name: 'Sarah Chen', role: 'Log Replication & RPC Network', avatar: 'SC', isSelf: false, activeStatus: 'Active 3h ago' },
+        { name: 'Marcus Wong', role: 'Chaos Testing & Benchmarking', avatar: 'MW', isSelf: false, activeStatus: 'Active 5h ago' }
       ],
       milestones: [
-        { id: 'm1', title: 'Formal Protocol Specification & RPC Schema', description: 'Define state transitions for Follower, Candidate, and Leader. Specify RequestVote and AppendEntries RPC schemas per Section 5 of Raft paper.', assignedTo: 'You', hours: 2.5, completed: true, dueDate: 'Sep 06' },
-        { id: 'm2', title: 'Leader Election & Heartbeat Timers', description: 'Implement randomized election timers (150ms-300ms), split-vote resolution, and periodic empty AppendEntries heartbeats from leader.', assignedTo: 'Sarah Chen', hours: 3.0, completed: true, dueDate: 'Sep 10' },
-        { id: 'm3', title: 'Log Replication & Consistency Verification', description: 'Implement log matching invariant, term checks on entries, commit index advance, and catch-up RPC retry logic across cluster peers.', assignedTo: 'Marcus Wong', hours: 3.5, completed: false, dueDate: 'Sep 15' },
-        { id: 'm4', title: 'Chaos Monkey Partition & Crash Recovery Tests', description: 'Simulate network drops, minority/majority partitions, and disk persistence recovery benchmarks under continuous client load.', assignedTo: 'Alex Rivera', hours: 2.0, completed: false, dueDate: 'Sep 17' },
-        { id: 'm5', title: 'Technical Report & Benchmark Graphs', description: 'Synthesize latency/throughput graphs across 3-node and 5-node clusters and write the formal architectural summary report.', assignedTo: 'You', hours: 2.5, completed: false, dueDate: 'Sep 18' }
+        { id: 'm1', title: 'Formal Protocol Specification & RPC Schema', description: 'Define state transitions for Follower, Candidate, and Leader. Specify RequestVote and AppendEntries RPC schemas.', assignedTo: 'You', hours: 2.5, completed: false, rawDate: '2026-09-11', startTime: '09:00', time: '09:00 AM – 11:30 AM', dueDate: 'Sep 11' },
+        { id: 'm2', title: 'Leader Election & Heartbeat Timers', description: 'Implement randomized election timers (150ms-300ms) and periodic AppendEntries heartbeats from leader.', assignedTo: 'Sarah Chen', hours: 3.0, completed: false, rawDate: '2026-09-13', startTime: '10:00', time: '10:00 AM – 01:00 PM', dueDate: 'Sep 13' },
+        { id: 'm3', title: 'Log Replication & Consistency Verification', description: 'Implement log matching invariant, term checks, commit index advance, and RPC retry logic.', assignedTo: 'Marcus Wong', hours: 3.5, completed: false, rawDate: '2026-09-15', startTime: '14:00', time: '02:00 PM – 05:30 PM', dueDate: 'Sep 15' },
+        { id: 'm4', title: 'Chaos Monkey Partition & Crash Recovery Tests', description: 'Simulate network drops, minority/majority partitions, and disk persistence recovery benchmarks.', assignedTo: 'Sarah Chen', hours: 2.0, completed: false, rawDate: '2026-09-16', startTime: '15:00', time: '03:00 PM – 05:00 PM', dueDate: 'Sep 16' },
+        { id: 'm5', title: 'Technical Report & Benchmark Graphs', description: 'Synthesize latency/throughput graphs across cluster nodes and compile architectural summary report.', assignedTo: 'You', hours: 2.5, completed: false, rawDate: '2026-09-17', startTime: '14:00', time: '02:00 PM – 04:30 PM', dueDate: 'Sep 17' }
       ],
       aiRiskAnalysis: {
         status: 'Workload Warning',
         tone: 'warning',
-        text: 'Milestone 3 due in 4 days. Marcus has 2 unmerged test suites; pair-program on Raft log RPCs to prevent deadline bottleneck before Midterms week.'
+        text: 'Milestone 1 scheduled today for 2.5h. Cluster benchmarks due Sep 17; keep RPC tests on track to protect study buffers.'
       },
       resources: [
         { title: 'Assignment_Rubric_v2.pdf', type: 'PDF', size: '1.8 MB' },
@@ -65,66 +64,34 @@ const state = {
       course: 'HCI204 Interaction Design',
       courseCode: 'HCI204',
       weightage: '25%',
-      dueDate: '2026-09-25',
-      dueDateLabel: 'Sep 25, 2026',
+      dueDate: '2026-09-24',
+      dueDateLabel: 'Sep 24, 2026',
       status: 'in_progress',
       statusLabel: 'In Progress',
       priority: 'Medium',
       isGroup: true,
       members: [
-        { name: 'You', role: 'Information Architecture & Wireframes', avatar: 'Y', isSelf: true, activeStatus: 'Active today' },
-        { name: 'Chloe Taylor', role: 'User Testing & Cognitive Walkthrough', avatar: 'CT', isSelf: false, activeStatus: 'Active 2d ago' },
-        { name: 'David Kim', role: 'High-Fidelity Figma Prototype', avatar: 'DK', isSelf: false, activeStatus: 'Active 4h ago' }
+        { name: 'You', role: 'User Research & Wireframes', avatar: 'Y', isSelf: true, activeStatus: 'Active today' },
+        { name: 'Chloe Taylor', role: 'Cognitive Walkthrough & Heuristics', avatar: 'CT', isSelf: false, activeStatus: 'Active 2d ago' },
+        { name: 'David Kim', role: 'Interactive Figma Component Prototype', avatar: 'DK', isSelf: false, activeStatus: 'Active 4h ago' },
+        { name: 'Elena Rostova', role: 'User Testing Lab Moderator', avatar: 'ER', isSelf: false, activeStatus: 'Active yesterday' },
+        { name: 'Jordan Patel', role: 'SUS Analysis & Executive Pitch Video', avatar: 'JP', isSelf: false, activeStatus: 'Active 1d ago' }
       ],
       milestones: [
-        { id: 'm1', title: 'User Personas & Journey Mapping', description: 'Conduct contextual inquiry and map user pain points for student time management workflows.', assignedTo: 'You', hours: 2.0, completed: true, dueDate: 'Sep 05' },
-        { id: 'm2', title: 'Mid-fidelity Wireframes & Heuristic Evaluation', description: 'Draft Nielsen Norman 10-heuristic audit and create medium-fidelity component wireframes.', assignedTo: 'Chloe Taylor', hours: 2.5, completed: true, dueDate: 'Sep 12' },
-        { id: 'm3', title: 'Interactive Prototype with Micro-interactions', description: 'Build clickable Figma component kit, fluid screen transitions, and bottom sheet gestures.', assignedTo: 'David Kim', hours: 3.0, completed: false, dueDate: 'Sep 19' },
-        { id: 'm4', title: '5-Participant Usability Lab Sessions', description: 'Run moderated usability sessions using Think-Aloud protocol and collect System Usability Scale (SUS) scores.', assignedTo: 'Chloe Taylor', hours: 2.5, completed: false, dueDate: 'Sep 22' },
-        { id: 'm5', title: 'Evaluation Synthesis Video & Executive Summary', description: 'Synthesize video highlight reel of user interactions and compile findings into final PDF deck.', assignedTo: 'You', hours: 2.0, completed: false, dueDate: 'Sep 25' }
+        { id: 'm1', title: 'User Research Synthesis & Journey Mapping', description: 'Conduct contextual inquiry and map user pain points for student cognitive workload management.', assignedTo: 'You', hours: 2.0, completed: false, rawDate: '2026-09-14', startTime: '10:00', time: '10:00 AM – 12:00 PM', dueDate: 'Sep 14' },
+        { id: 'm2', title: 'Mid-fidelity Wireframes & Heuristic Audit', description: 'Draft Nielsen Norman 10-heuristic audit and create medium-fidelity component wireframes.', assignedTo: 'Chloe Taylor', hours: 2.5, completed: false, rawDate: '2026-09-16', startTime: '11:00', time: '11:00 AM – 01:30 PM', dueDate: 'Sep 16' },
+        { id: 'm3', title: 'Interactive Prototype & Micro-interactions', description: 'Build clickable Figma component kit, fluid screen transitions, and bottom sheet gestures.', assignedTo: 'David Kim', hours: 3.0, completed: false, rawDate: '2026-09-19', startTime: '13:00', time: '01:00 PM – 04:00 PM', dueDate: 'Sep 19' },
+        { id: 'm4', title: 'Usability Lab Sessions & Think-Aloud Protocol', description: 'Run moderated usability sessions with 5 participants and collect System Usability Scale (SUS) scores.', assignedTo: 'Elena Rostova', hours: 2.5, completed: false, rawDate: '2026-09-21', startTime: '14:00', time: '02:00 PM – 04:30 PM', dueDate: 'Sep 21' },
+        { id: 'm5', title: 'Evaluation Synthesis Video & Executive Summary', description: 'Synthesize video highlight reel of user interactions and compile findings into final PDF deck.', assignedTo: 'Jordan Patel', hours: 2.0, completed: false, rawDate: '2026-09-24', startTime: '15:00', time: '03:00 PM – 05:00 PM', dueDate: 'Sep 24' }
       ],
       aiRiskAnalysis: {
         status: 'On Track',
         tone: 'success',
-        text: 'Team pacing is optimal. 40% completed with 14 days remaining. Next milestone due in 8 days.'
+        text: 'Team pacing is optimal across 5 members. Initial user journey synthesis begins on Monday Sep 14.'
       },
       resources: [
         { title: 'Figma UI Component Kit & Flows', type: 'Figma', link: 'figma.com/@hci_team' },
         { title: 'Interview Audio & Transcripts.zip', type: 'Archive', size: '142 MB' }
-      ]
-    },
-    {
-      id: 'asg-3',
-      title: 'B2B SaaS Go-To-Market Strategic Business Case',
-      course: 'MGT210 Marketing Strategy',
-      courseCode: 'MGT210',
-      weightage: '30%',
-      dueDate: '2026-10-02',
-      dueDateLabel: 'Oct 02, 2026',
-      status: 'review',
-      statusLabel: 'Needs Review',
-      priority: 'Medium',
-      isGroup: true,
-      members: [
-        { name: 'You', role: 'Financial Projections & CAC/LTV Model', avatar: 'Y', isSelf: true, activeStatus: 'Active today' },
-        { name: 'Elena Rostova', role: 'Competitor Landscape & Positioning', avatar: 'ER', isSelf: false, activeStatus: 'Active yesterday' },
-        { name: 'Jordan Patel', role: 'Slide Pitch Deck & Appendix', avatar: 'JP', isSelf: false, activeStatus: 'Active 1d ago' }
-      ],
-      milestones: [
-        { id: 'm1', title: 'TAM / SAM / SOM Market Sizing & ICP Persona', description: 'Estimate total addressable market and top-down SaaS buyer personas.', assignedTo: 'You', hours: 2.0, completed: true, dueDate: 'Aug 28' },
-        { id: 'm2', title: 'Unit Economics & 3-Year P&L Model', description: 'Model CAC, LTV, churn rate, and monthly recurring revenue projections across 36 months.', assignedTo: 'You', hours: 3.0, completed: true, dueDate: 'Sep 04' },
-        { id: 'm3', title: 'Draft Strategy Deck & Peer Review Round', description: 'Create 15-slide investor pitch deck and integrate feedback from peer review workshop.', assignedTo: 'Elena Rostova', hours: 2.5, completed: true, dueDate: 'Sep 10' },
-        { id: 'm4', title: 'Professor Office Hours Feedback Integration', description: 'Refine slide 14 payback period and defend pricing tier assumptions.', assignedTo: 'Elena Rostova', hours: 1.5, completed: false, dueDate: 'Sep 24' },
-        { id: 'm5', title: 'Final Pitch Video & Slide Submission', description: 'Record 7-minute pitch presentation and submit final slide deck.', assignedTo: 'Jordan Patel', hours: 2.0, completed: false, dueDate: 'Oct 02' }
-      ],
-      aiRiskAnalysis: {
-        status: 'Review Ready',
-        tone: 'info',
-        text: 'Milestone 3 draft complete. Elena flagged slide 14 CAC payback period for your verification.'
-      },
-      resources: [
-        { title: 'Financial_Model_v3.xlsx', type: 'Spreadsheet', size: '820 KB' },
-        { title: 'Google Slides Pitch Presentation', type: 'Slides', link: 'docs.google.com/presentation' }
       ]
     }
   ],
@@ -132,84 +99,52 @@ const state = {
     { id: 'assignment', label: 'Assignment', class: 'cat-assignment' },
     { id: 'part_time_job', label: 'Part time job', class: 'cat-part_time_job' },
     { id: 'social', label: 'Social', class: 'cat-social' },
-    { id: 'errands', label: 'Errands', class: 'cat-errands' },
-    { id: 'exercise', label: 'Exercise', class: 'cat-exercise' },
-    { id: 'gaming', label: 'Gaming', class: 'cat-gaming' }
+    { id: 'errands', label: 'Errands', class: 'cat-errands' }
   ],
   tasks: [
-    // Today's tasks (2026-09-11)
+    // Day 1: 2026-09-11 (Friday, Today) — Highest Load Day: 8.0 Hours (4 tasks across all 4 categories)
     {
-      id: 1,
-      title: 'Raft Consensus Algorithm: State Machine Implementation',
-      time: '09:00 AM – 11:00 AM',
+      id: 'task-asg-1-m1',
+      title: '[CS301] Formal Protocol Specification & RPC Schema',
+      time: '09:00 AM – 11:30 AM',
       category: 'assignment',
       categoryLabel: 'Assignment',
       date: '2026-09-11',
-      hours: 2.0,
+      hours: 2.5,
       status: 'pending',
-      completed: false
+      completed: false,
+      assignedTo: 'You',
+      asgId: 'asg-1',
+      milestoneId: 'm1'
     },
     {
-      id: 2,
-      title: 'Draft Literature Review Section 3: Cognitive Load in UI',
-      time: '11:30 AM – 01:00 PM',
-      category: 'assignment',
-      categoryLabel: 'Assignment',
-      date: '2026-09-11',
-      hours: 1.5,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 3,
+      id: 'task-2',
       title: 'Campus Library Information Desk Shift',
-      time: '01:30 PM – 03:00 PM',
+      time: '01:00 PM – 04:00 PM',
       category: 'part_time_job',
       categoryLabel: 'Part time job',
       date: '2026-09-11',
+      hours: 3.0,
+      status: 'pending',
+      completed: false
+    },
+    {
+      id: 'task-3',
+      title: 'HCI Project Group Dinner & Social Sync',
+      time: '05:30 PM – 07:00 PM',
+      category: 'social',
+      categoryLabel: 'Social',
+      date: '2026-09-11',
       hours: 1.5,
       status: 'pending',
       completed: false
     },
     {
-      id: 4,
-      title: 'Pick up Dry Cleaning & Return Library Books',
-      time: '04:00 PM – 04:30 PM',
+      id: 'task-4',
+      title: 'Weekly Grocery Run & Meal Prep',
+      time: '08:00 PM – 09:00 PM',
       category: 'errands',
       categoryLabel: 'Errands',
-      date: '2026-09-11',
-      hours: 0.5,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 5,
-      title: 'Aerobic Run & Mindful Decompression',
-      time: '05:30 PM – 06:15 PM',
-      category: 'exercise',
-      categoryLabel: 'Exercise',
-      date: '2026-09-11',
-      hours: 0.8,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 6,
-      title: 'HCI Project Group Dinner & Social Sync',
-      time: '07:00 PM – 08:00 PM',
-      category: 'social',
-      categoryLabel: 'Social',
-      date: '2026-09-11',
-      hours: 1.0,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 7,
-      title: 'Ranked Valorant Match with Roommates',
-      time: '09:00 PM – 10:30 PM',
-      category: 'gaming',
-      categoryLabel: 'Gaming',
       date: '2026-09-11',
       hours: 1.0,
       status: 'pending',
@@ -217,138 +152,80 @@ const state = {
       isCurrent: true
     },
 
-    // This week's tasks (earlier and weekend)
+    // Day 2: 2026-09-14 (Monday) — 4.0 Hours (2 tasks)
     {
-      id: 8,
-      title: 'Algorithm Problem Set 2 Submission',
-      time: '03:00 PM – 05:00 PM',
+      id: 'task-asg-2-m1',
+      title: '[HCI204] User Research Synthesis & Journey Mapping',
+      time: '10:00 AM – 12:00 PM',
       category: 'assignment',
       categoryLabel: 'Assignment',
-      date: '2026-09-10',
+      date: '2026-09-14',
       hours: 2.0,
-      status: 'done',
-      completed: true
+      status: 'pending',
+      completed: false,
+      assignedTo: 'You',
+      asgId: 'asg-2',
+      milestoneId: 'm1'
     },
     {
-      id: 9,
-      title: 'Pharmacy & Household Grocery Run',
-      time: '06:00 PM – 06:30 PM',
-      category: 'errands',
-      categoryLabel: 'Errands',
-      date: '2026-09-10',
-      hours: 0.5,
-      status: 'done',
-      completed: true
-    },
-    {
-      id: 10,
-      title: 'Peer Review: Wireframe Prototype Critique',
-      time: '11:00 AM – 12:00 PM',
-      category: 'social',
-      categoryLabel: 'Social',
-      date: '2026-09-09',
-      hours: 1.0,
-      status: 'done',
-      completed: true
-    },
-    {
-      id: 11,
+      id: 'task-6',
       title: 'Student Union Barista Training Shift',
-      time: '02:00 PM – 04:30 PM',
+      time: '02:00 PM – 04:00 PM',
       category: 'part_time_job',
       categoryLabel: 'Part time job',
-      date: '2026-09-08',
-      hours: 2.5,
-      status: 'done',
-      completed: true
-    },
-    {
-      id: 12,
-      title: 'Weekend Meal Prep & Grocery Planning',
-      time: '10:00 AM – 11:00 AM',
-      category: 'errands',
-      categoryLabel: 'Errands',
-      date: '2026-09-12',
-      hours: 1.0,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 13,
-      title: 'Gym Upper Body Strength Training',
-      time: '04:00 PM – 05:15 PM',
-      category: 'exercise',
-      categoryLabel: 'Exercise',
-      date: '2026-09-12',
-      hours: 1.2,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 14,
-      title: 'Board Games Club Weekend Meetup',
-      time: '02:30 PM – 04:30 PM',
-      category: 'social',
-      categoryLabel: 'Social',
-      date: '2026-09-13',
+      date: '2026-09-14',
       hours: 2.0,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 15,
-      title: 'Steam Weekend Co-op Campaign Session',
-      time: '08:00 PM – 09:30 PM',
-      category: 'gaming',
-      categoryLabel: 'Gaming',
-      date: '2026-09-13',
-      hours: 1.5,
       status: 'pending',
       completed: false
     },
 
-    // Later in this month (September)
+    // Day 3: 2026-09-17 (Thursday) — 3.5 Hours (2 tasks)
     {
-      id: 16,
-      title: 'Distributed Systems Midterm Review',
-      time: '10:00 AM – 12:30 PM',
+      id: 'task-7',
+      title: 'Pharmacy & Lab Equipment Pickup',
+      time: '11:00 AM – 12:00 PM',
+      category: 'errands',
+      categoryLabel: 'Errands',
+      date: '2026-09-17',
+      hours: 1.0,
+      status: 'pending',
+      completed: false
+    },
+    {
+      id: 'task-asg-1-m5',
+      title: '[CS301] Technical Report & Benchmark Graphs',
+      time: '02:00 PM – 04:30 PM',
       category: 'assignment',
       categoryLabel: 'Assignment',
-      date: '2026-09-16',
+      date: '2026-09-17',
       hours: 2.5,
       status: 'pending',
-      completed: false
+      completed: false,
+      assignedTo: 'You',
+      asgId: 'asg-1',
+      milestoneId: 'm5'
     },
+
+    // Day 4: 2026-09-22 (Tuesday) — 3.0 Hours (2 tasks)
     {
-      id: 17,
-      title: 'Campus Bookstore Saturday Shift',
-      time: '01:00 PM – 04:00 PM',
-      category: 'part_time_job',
-      categoryLabel: 'Part time job',
-      date: '2026-09-19',
-      hours: 3.0,
-      status: 'pending',
-      completed: false
-    },
-    {
-      id: 18,
-      title: 'Inter-College Badminton Friendly Match',
-      time: '05:00 PM – 06:30 PM',
-      category: 'exercise',
-      categoryLabel: 'Exercise',
+      id: 'task-9',
+      title: 'Peer Study Group & Coffee Discussion',
+      time: '01:30 PM – 03:00 PM',
+      category: 'social',
+      categoryLabel: 'Social',
       date: '2026-09-22',
       hours: 1.5,
       status: 'pending',
       completed: false
     },
     {
-      id: 19,
-      title: 'Indie Game Jam Community Kickoff',
-      time: '03:00 PM – 05:00 PM',
-      category: 'gaming',
-      categoryLabel: 'Gaming',
-      date: '2026-09-27',
-      hours: 2.0,
+      id: 'task-10',
+      title: 'Dry Cleaning & Package Return',
+      time: '04:30 PM – 06:00 PM',
+      category: 'errands',
+      categoryLabel: 'Errands',
+      date: '2026-09-22',
+      hours: 1.5,
       status: 'pending',
       completed: false
     }
@@ -358,7 +235,7 @@ const state = {
 // Calculate Workload % and Capacity Risk dynamically for the Dashboard
 function updateCapacityMetrics() {
   const todayActiveTasks = state.tasks.filter(t => t.date === state.todayDate && t.status !== 'done');
-  const remainingHours = todayActiveTasks.reduce((sum, t) => sum + t.hours, 0);
+  const remainingHours = todayActiveTasks.reduce((sum, t) => sum + (parseFloat(t.hours) || 0), 0);
   const workloadPct = Math.min(Math.round((remainingHours / state.baseCapacityHours) * 100), 150);
 
   // UI Elements
@@ -393,11 +270,37 @@ function updateCapacityMetrics() {
   const riskPressureScore = document.getElementById('riskPressureScore');
   const riskPressureFill = document.getElementById('riskPressureFill');
   const riskPressurePin = document.getElementById('riskPressurePin');
-  const riskScoreVal = workloadPct > 80 ? Math.min(Math.round(workloadPct * 1.14), 99) : workloadPct;
+  const riskScoreVal = workloadPct >= 100 ? 98 : (workloadPct > 80 ? Math.min(Math.round(workloadPct * 1.14), 99) : workloadPct);
 
   if (riskPressureScore) riskPressureScore.innerText = `${riskScoreVal}%`;
   if (riskPressureFill) riskPressureFill.style.width = `${Math.min(riskScoreVal, 100)}%`;
   if (riskPressurePin) riskPressurePin.style.left = `${Math.min(riskScoreVal, 100)}%`;
+
+  // Dynamic Today's Backpack Category Breakdown (uses default 4 categories)
+  const breakdownList = document.getElementById('backpackBreakdownList');
+  if (breakdownList) {
+    const catColorClasses = {
+      assignment: 'assignment',
+      part_time_job: 'part_time_job',
+      social: 'social',
+      errands: 'errands'
+    };
+
+    breakdownList.innerHTML = state.categories.map(cat => {
+      const catTasks = todayActiveTasks.filter(t => t.category === cat.id);
+      const catHours = catTasks.reduce((sum, t) => sum + (parseFloat(t.hours) || 0), 0);
+      const catPct = remainingHours > 0 ? Math.round((catHours / remainingHours) * 100) : 0;
+      const catClass = catColorClasses[cat.id] || 'assignment';
+
+      return `
+        <div class="breakdown-item">
+          <div class="breakdown-label"><span class="breakdown-dot ${catClass}"></span><span>${cat.label}</span></div>
+          <div class="breakdown-bar-wrap"><div class="mini-bar-fill ${catClass}" style="width: ${catPct}%;"></div></div>
+          <span class="breakdown-val">${catHours.toFixed(1)}h</span>
+        </div>
+      `;
+    }).join('');
+  }
 
   // Companion reactions & Risk level adjustments
   if (workloadPct > 80) {
@@ -413,7 +316,7 @@ function updateCapacityMetrics() {
       companionMoodDot.title = 'Packy: Busy / High Load';
     }
     if (companionSpeech) {
-      companionSpeech.innerText = "Packy says: Your backpack is getting heavy today!";
+      companionSpeech.innerText = "Packy says: Your backpack is at maximum capacity (8.0h) today!";
     }
   } else if (workloadPct > 50) {
     if (riskLevelText) {
@@ -538,6 +441,9 @@ function showAddDailyTaskScreen(prefilledDate) {
 
   // Reset voice state
   resetDailyTaskVoiceState();
+
+  // Update Before/After Impact Preview
+  updateDailyTaskImpactPreview();
 
   showToast('New Daily Task setup');
 }
@@ -699,6 +605,9 @@ function updateDailyTaskDuration() {
   const [eH, eM] = endVal.split(':').map(Number);
   let diffMins = (eH * 60 + eM) - (sH * 60 + sM);
   if (diffMins < 0) diffMins += 24 * 60; // Cross midnight wrap
+
+  // Recalculate Before/After Impact Preview in real-time
+  updateDailyTaskImpactPreview();
 }
 
 // Apply Duration Preset (e.g. +30m, +1h)
@@ -716,6 +625,122 @@ function applyDailyTaskDurationPreset(minsToAdd) {
   endTimeInput.value = `${eH}:${eM}`;
 
   updateDailyTaskDuration();
+}
+
+// Real-Time Before/After Impact Preview ("Should I Say Yes?")
+function updateDailyTaskImpactPreview() {
+  const card = document.getElementById('dailyTaskImpactCard');
+  if (!card) return;
+
+  const dateInput = document.getElementById('dailyTaskDateInput');
+  const startTimeInput = document.getElementById('dailyTaskStartTime');
+  const endTimeInput = document.getElementById('dailyTaskEndTime');
+
+  const targetDate = dateInput?.value || state.selectedDate || state.todayDate;
+  const startVal = startTimeInput?.value || '14:00';
+  const endVal = endTimeInput?.value || '15:30';
+
+  // Calculate duration of proposed task
+  const [sH, sM] = startVal.split(':').map(Number);
+  const [eH, eM] = endVal.split(':').map(Number);
+  let diffMins = (eH * 60 + eM) - (sH * 60 + sM);
+  if (diffMins < 0) diffMins += 24 * 60; // Midnight cross
+  const taskHours = Math.max(0.5, parseFloat((diffMins / 60).toFixed(1)));
+
+  // Current day workload baseline (Before)
+  const current = calculateDayWorkload(targetDate);
+  const beforeHours = current.hours;
+  const beforePct = current.pct;
+  const beforeBuffer = current.freeHours;
+
+  // Projected day workload (After)
+  const afterHours = Number((beforeHours + taskHours).toFixed(1));
+  const afterPct = Math.min(Math.round((afterHours / state.baseCapacityHours) * 100), 200);
+  const afterBuffer = Number(Math.max(0, state.baseCapacityHours - afterHours).toFixed(1));
+
+  // Delta calculations
+  const deltaPct = Math.max(0, afterPct - beforePct);
+  const bufferReduction = Number(Math.max(0, beforeBuffer - afterBuffer).toFixed(1));
+
+  // Format date label (e.g. "Fri, Sep 11")
+  const dateLabel = formatTaskDateLabel(targetDate) || targetDate;
+
+  // UI Elements
+  const capBefore = document.getElementById('dailyImpactCapBefore');
+  const capAfter = document.getElementById('dailyImpactCapAfter');
+  const deltaPill = document.getElementById('dailyImpactDeltaPill');
+  const fillBaseline = document.getElementById('dailyImpactFillBaseline');
+  const fillDelta = document.getElementById('dailyImpactFillDelta');
+  const bufferBefore = document.getElementById('dailyImpactBufferBefore');
+  const bufferAfter = document.getElementById('dailyImpactBufferAfter');
+  const bufferPill = document.getElementById('dailyImpactBufferPill');
+  const fillBufferRemain = document.getElementById('dailyImpactFillBufferRemain');
+  const fillBufferUsed = document.getElementById('dailyImpactFillBufferUsed');
+  const bottleneckBox = document.getElementById('dailyImpactBottleneckBox');
+  const alertIcon = document.getElementById('dailyImpactAlertIcon');
+  const alertTitle = document.getElementById('dailyImpactAlertTitle');
+  const alertDesc = document.getElementById('dailyImpactAlertDesc');
+
+  // Update numbers and badges
+  if (capBefore) capBefore.innerText = `${beforePct}%`;
+  if (capAfter) capAfter.innerText = `${afterPct}%`;
+  if (deltaPill) deltaPill.innerText = `[+${deltaPct}% / ${taskHours}h]`;
+
+  if (bufferBefore) bufferBefore.innerText = `${beforeBuffer.toFixed(1)}h`;
+  if (bufferAfter) bufferAfter.innerText = `${afterBuffer.toFixed(1)}h`;
+  if (bufferPill) bufferPill.innerText = `[-${bufferReduction.toFixed(1)}h]`;
+
+  // Visual Bars
+  // 1. Capacity progress bar (Baseline in Indigo + Delta in state color)
+  const baseFillPct = Math.min(beforePct, 100);
+  const deltaFillPct = Math.min(deltaPct, Math.max(0, 100 - baseFillPct));
+  if (fillBaseline) fillBaseline.style.width = `${baseFillPct}%`;
+  if (fillDelta) fillDelta.style.width = `${deltaFillPct}%`;
+
+  // 2. Buffer visual bar
+  const remainFillPct = Math.min(Math.round((afterBuffer / state.baseCapacityHours) * 100), 100);
+  const usedFillPct = Math.min(Math.round((bufferReduction / state.baseCapacityHours) * 100), 100 - remainFillPct);
+  if (fillBufferRemain) fillBufferRemain.style.width = `${remainFillPct}%`;
+  if (fillBufferUsed) fillBufferUsed.style.width = `${usedFillPct}%`;
+
+  // Evaluate Risk Tiers: Overload (>100%), Warning (>=80%), Safe (<80%)
+  if (afterPct > 100) {
+    // Critical Overload
+    if (deltaPill) deltaPill.className = 'impact-delta-pill font-mono danger';
+    if (bufferPill) bufferPill.className = 'impact-reduction-pill font-mono danger';
+    if (fillDelta) fillDelta.className = 'daily-impact-fill-delta danger';
+
+    if (bottleneckBox) bottleneckBox.className = 'daily-impact-alert-box danger';
+    if (alertIcon) alertIcon.innerText = '⚠️';
+    if (alertTitle) alertTitle.innerText = `Critical Capacity Exceeded (${afterPct}%)`;
+    if (alertDesc) {
+      alertDesc.innerText = `Adding this ${taskHours}h task pushes ${dateLabel} to ${afterHours}h against your ${state.baseCapacityHours.toFixed(1)}h limit (${afterBuffer.toFixed(1)}h buffer). High burnout risk — consider shortening duration or scheduling on another day.`;
+    }
+  } else if (afterPct >= 80) {
+    // High Load / Bottleneck Warning
+    if (deltaPill) deltaPill.className = 'impact-delta-pill font-mono warning';
+    if (bufferPill) bufferPill.className = 'impact-reduction-pill font-mono warning';
+    if (fillDelta) fillDelta.className = 'daily-impact-fill-delta warning';
+
+    if (bottleneckBox) bottleneckBox.className = 'daily-impact-alert-box warning';
+    if (alertIcon) alertIcon.innerText = '⚡';
+    if (alertTitle) alertTitle.innerText = `Cognitive Bottleneck Warning (${afterPct}%)`;
+    if (alertDesc) {
+      alertDesc.innerText = `Adding this ${taskHours}h task pushes ${dateLabel} to ${afterHours}h (${afterPct}% capacity). Restorative buffer narrows to ${afterBuffer.toFixed(1)}h. Pace your focus blocks carefully.`;
+    }
+  } else {
+    // Safe Headroom
+    if (deltaPill) deltaPill.className = 'impact-delta-pill font-mono safe';
+    if (bufferPill) bufferPill.className = 'impact-reduction-pill font-mono safe';
+    if (fillDelta) fillDelta.className = 'daily-impact-fill-delta safe';
+
+    if (bottleneckBox) bottleneckBox.className = 'daily-impact-alert-box safe';
+    if (alertIcon) alertIcon.innerText = '✓';
+    if (alertTitle) alertTitle.innerText = `Sustainable Load (${afterPct}%)`;
+    if (alertDesc) {
+      alertDesc.innerText = `Adding this ${taskHours}h task keeps ${dateLabel} at ${afterPct}% with a healthy ${afterBuffer.toFixed(1)}h buffer. Safe to accept without fatigue risk.`;
+    }
+  }
 }
 
 // Format 24h time ("14:00") into 12h time string ("02:00 PM")
@@ -853,18 +878,14 @@ function parseVoiceTaskInput(transcript) {
 
   // 1. Detect category from keywords
   let matchedCat = null;
-  if (lower.includes('exercise') || lower.includes('gym') || lower.includes('run') || lower.includes('workout')) {
-    matchedCat = state.categories.find(c => c.id === 'exercise');
-  } else if (lower.includes('assignment') || lower.includes('study') || lower.includes('lecture') || lower.includes('lab') || lower.includes('cs301') || lower.includes('notes') || lower.includes('exam')) {
+  if (lower.includes('assignment') || lower.includes('study') || lower.includes('lecture') || lower.includes('lab') || lower.includes('cs301') || lower.includes('hci') || lower.includes('notes') || lower.includes('exam') || lower.includes('report') || lower.includes('thesis')) {
     matchedCat = state.categories.find(c => c.id === 'assignment');
-  } else if (lower.includes('job') || lower.includes('shift') || lower.includes('work') || lower.includes('office')) {
+  } else if (lower.includes('job') || lower.includes('shift') || lower.includes('work') || lower.includes('office') || lower.includes('barista') || lower.includes('desk') || lower.includes('library')) {
     matchedCat = state.categories.find(c => c.id === 'part_time_job');
-  } else if (lower.includes('social') || lower.includes('friend') || lower.includes('dinner') || lower.includes('lunch') || lower.includes('meet') || lower.includes('chat')) {
+  } else if (lower.includes('social') || lower.includes('friend') || lower.includes('dinner') || lower.includes('lunch') || lower.includes('meet') || lower.includes('chat') || lower.includes('club') || lower.includes('game') || lower.includes('gaming') || lower.includes('coffee')) {
     matchedCat = state.categories.find(c => c.id === 'social');
-  } else if (lower.includes('errand') || lower.includes('grocery') || lower.includes('buy') || lower.includes('clean') || lower.includes('shop')) {
+  } else if (lower.includes('errand') || lower.includes('grocery') || lower.includes('buy') || lower.includes('clean') || lower.includes('shop') || lower.includes('gym') || lower.includes('exercise') || lower.includes('run') || lower.includes('laundry')) {
     matchedCat = state.categories.find(c => c.id === 'errands');
-  } else if (lower.includes('game') || lower.includes('gaming') || lower.includes('play') || lower.includes('valorant')) {
-    matchedCat = state.categories.find(c => c.id === 'gaming');
   } else {
     // Check if custom category matches
     matchedCat = state.categories.find(c => lower.includes(c.label.toLowerCase()));
@@ -906,12 +927,23 @@ function parseVoiceTaskInput(transcript) {
     .replace(/\b(?:today|tomorrow|yesterday)\b/gi, '')
     .trim();
 
+  // Detect "tomorrow" date shift if spoken
+  if (lower.includes('tomorrow')) {
+    const d = new Date(state.todayDate);
+    d.setDate(d.getDate() + 1);
+    const dateInput = document.getElementById('dailyTaskDateInput');
+    if (dateInput) dateInput.value = d.toISOString().split('T')[0];
+  }
+
   // Capitalize first letter
   if (cleanTitle) {
     cleanTitle = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
     const titleInput = document.getElementById('dailyTaskTitleInput');
     if (titleInput) titleInput.value = cleanTitle;
   }
+
+  updateDailyTaskDuration();
+  updateDailyTaskImpactPreview();
 }
 
 // Handle Create Daily Task Submit
@@ -1011,10 +1043,18 @@ function closeNotificationsModal() {
 // TASK LIST SCREEN LOGIC
 // ==========================================================================
 
-// Switch Screen View between Home, Task List, and Group Projects
+// Switch Screen View between Home, Task List, Group Projects, and User Profile
 function switchNavTab(tabElem, tabName) {
   document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
-  tabElem.classList.add('active');
+  if (tabElem && tabElem.classList) {
+    tabElem.classList.add('active');
+  } else {
+    const dockTabs = document.querySelectorAll('.dock-tab');
+    if (tabName === 'home' && dockTabs[0]) dockTabs[0].classList.add('active');
+    else if (tabName === 'task' && dockTabs[1]) dockTabs[1].classList.add('active');
+    else if (tabName === 'group' && dockTabs[2]) dockTabs[2].classList.add('active');
+    else if (tabName === 'profile' && dockTabs[3]) dockTabs[3].classList.add('active');
+  }
 
   const screenDashboard = document.getElementById('screenDashboard');
   const screenTaskList = document.getElementById('screenTaskList');
@@ -1022,6 +1062,7 @@ function switchNavTab(tabElem, tabName) {
   const screenAssignmentDetail = document.getElementById('screenAssignmentDetail');
   const screenAddAssignment = document.getElementById('screenAddAssignment');
   const screenAddDailyTask = document.getElementById('screenAddDailyTask');
+  const screenProfile = document.getElementById('screenProfile');
 
   if (screenAssignmentDetail) {
     screenAssignmentDetail.style.display = 'none';
@@ -1045,6 +1086,10 @@ function switchNavTab(tabElem, tabName) {
       screenTaskList.style.display = 'none';
       screenTaskList.classList.remove('active');
     }
+    if (screenProfile) {
+      screenProfile.style.display = 'none';
+      screenProfile.classList.remove('active');
+    }
     if (screenGroupAssignment) {
       screenGroupAssignment.style.display = 'flex';
       screenGroupAssignment.classList.add('active');
@@ -1059,6 +1104,10 @@ function switchNavTab(tabElem, tabName) {
     if (screenGroupAssignment) {
       screenGroupAssignment.style.display = 'none';
       screenGroupAssignment.classList.remove('active');
+    }
+    if (screenProfile) {
+      screenProfile.style.display = 'none';
+      screenProfile.classList.remove('active');
     }
     if (screenTaskList) {
       screenTaskList.style.display = 'flex';
@@ -1077,12 +1126,35 @@ function switchNavTab(tabElem, tabName) {
       screenGroupAssignment.style.display = 'none';
       screenGroupAssignment.classList.remove('active');
     }
+    if (screenProfile) {
+      screenProfile.style.display = 'none';
+      screenProfile.classList.remove('active');
+    }
     if (screenDashboard) {
       screenDashboard.style.display = 'flex';
       screenDashboard.classList.add('active');
     }
     updateCapacityMetrics();
     showToast('Home dashboard');
+  } else if (tabName === 'profile') {
+    if (screenDashboard) {
+      screenDashboard.style.display = 'none';
+      screenDashboard.classList.remove('active');
+    }
+    if (screenTaskList) {
+      screenTaskList.style.display = 'none';
+      screenTaskList.classList.remove('active');
+    }
+    if (screenGroupAssignment) {
+      screenGroupAssignment.style.display = 'none';
+      screenGroupAssignment.classList.remove('active');
+    }
+    if (screenProfile) {
+      screenProfile.style.display = 'flex';
+      screenProfile.classList.add('active');
+    }
+    renderProfileScreen();
+    showToast('User Profile & Pending Tasks loaded');
   } else if (tabName === 'addAssignment') {
     showAddAssignmentScreen();
   } else {
@@ -2270,9 +2342,8 @@ function hideAddAssignmentScreen() {
   // Ensure Group tab is highlighted in bottom dock
   document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
   const dockTabs = document.querySelectorAll('.dock-tab');
-  if (dockTabs.length >= 4) {
-    dockTabs[2]?.classList.remove('active');
-    dockTabs[3]?.classList.add('active');
+  if (dockTabs.length >= 3) {
+    dockTabs[2]?.classList.add('active');
   }
 
   renderGroupAssignmentScreen();
@@ -4554,23 +4625,33 @@ function applyAiReorganisePlan(assignmentId, mode) {
   acceptRecoveryPlan(assignmentId);
 }
 
-// Sync Assignment Milestones into Task List (state.tasks)
+// Sync Assignment Milestones into Task List (state.tasks) - only user's assigned subtasks
 function syncMilestonesToTaskList() {
   if (!state.assignments) return;
   state.assignments.forEach(asg => {
     if (!asg.milestones) return;
     asg.milestones.forEach((m) => {
       const taskId = `task-${asg.id}-${m.id}`;
-      const existingTask = state.tasks.find(t => t.id === taskId);
+      const existingTaskIdx = state.tasks.findIndex(t => t.id === taskId);
+      const isUserTask = (m.assignedTo === 'You');
+
+      if (!isUserTask) {
+        // If milestone is assigned to a peer, ensure it is NOT shown in user's task list
+        if (existingTaskIdx !== -1) {
+          state.tasks.splice(existingTaskIdx, 1);
+        }
+        return;
+      }
 
       // Determine date and time
       const taskDate = parseMilestoneDate(m, asg);
       const taskTime = m.time || formatTimeRange(m.startTime || '14:00', m.hours || 2.0);
 
-      if (existingTask) {
+      if (existingTaskIdx !== -1) {
+        const existingTask = state.tasks[existingTaskIdx];
         existingTask.completed = m.completed;
         existingTask.status = m.completed ? 'done' : 'pending';
-        existingTask.assignedTo = m.assignedTo || 'You';
+        existingTask.assignedTo = 'You';
         existingTask.title = `[${asg.courseCode}] ${m.title}`;
         existingTask.description = m.description || `Milestone for ${asg.title}`;
         existingTask.date = taskDate;
@@ -4587,7 +4668,7 @@ function syncMilestonesToTaskList() {
           hours: m.hours || 2.0,
           status: m.completed ? 'done' : 'pending',
           completed: m.completed,
-          assignedTo: m.assignedTo || 'You',
+          assignedTo: 'You',
           description: m.description || `Milestone for ${asg.title}`,
           asgId: asg.id,
           milestoneId: m.id
@@ -4997,6 +5078,144 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
     }
   });
 });
+
+
+// ==========================================================================
+// USER PROFILE & PENDING TASKS LOGIC
+// ==========================================================================
+
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function renderProfileScreen() {
+  const mount = document.getElementById('profilePendingListMount');
+  const countNum = document.getElementById('profilePendingCountNum');
+  const hoursNum = document.getElementById('profilePendingHoursNum');
+  const capNum = document.getElementById('profileDailyCapNum');
+  const badge = document.getElementById('profilePendingBadge');
+
+  if (capNum) {
+    capNum.textContent = `${(state.baseCapacityHours || 8.0).toFixed(1)}h`;
+  }
+
+  // Filter pending tasks (not completed and status not 'done')
+  const pendingTasks = (state.tasks || []).filter(t => !t.completed && t.status !== 'done');
+
+  // Calculate total pending hours
+  const totalPendingHours = pendingTasks.reduce((acc, t) => acc + (parseFloat(t.hours) || 0), 0);
+
+  if (countNum) {
+    countNum.textContent = pendingTasks.length;
+  }
+  if (hoursNum) {
+    hoursNum.textContent = `${totalPendingHours.toFixed(1)}h`;
+  }
+  if (badge) {
+    badge.textContent = `${pendingTasks.length} ${pendingTasks.length === 1 ? 'Task' : 'Tasks'}`;
+  }
+
+  if (!mount) return;
+
+  if (pendingTasks.length === 0) {
+    mount.innerHTML = `
+      <div class="profile-pending-empty">
+        <div class="profile-empty-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h5>All Caught Up! 🎉</h5>
+        <p>You have no pending tasks right now. Great job keeping your workload balanced!</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Sort pending tasks: today first, then by date, then by time
+  const sorted = [...pendingTasks].sort((a, b) => {
+    if (a.date !== b.date) {
+      return a.date.localeCompare(b.date);
+    }
+    return parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time);
+  });
+
+  let html = '';
+  sorted.forEach(t => {
+    const isToday = t.date === state.todayDate;
+    const dateDisplay = isToday ? 'Today' : formatTaskDateLabel(t.date);
+    const catClass = t.category ? `cat-${t.category}` : 'cat-assignment';
+    const catLabel = t.categoryLabel || (t.category ? t.category.replace('_', ' ') : 'Task');
+    const isRescheduled = t.status === 'rescheduled';
+    const durationHours = parseFloat(t.hours) || 1.0;
+
+    html += `
+      <div class="profile-pending-card" id="profileTask_${t.id}">
+        <div class="profile-task-top">
+          <div class="profile-task-title-group">
+            <h5 class="profile-task-title">${escapeHtml(t.title)}</h5>
+            <div class="profile-task-meta">
+              <span class="profile-task-date">${dateDisplay}</span>
+              <span class="profile-task-hours font-mono">${durationHours.toFixed(1)}h</span>
+              <span class="task-category-tag ${catClass}">${escapeHtml(catLabel)}</span>
+            </div>
+          </div>
+          <button class="profile-task-done-btn" type="button" onclick="toggleTaskFromProfile('${t.id}')" title="Mark Task as Done">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Done</span>
+          </button>
+        </div>
+        <div class="profile-task-footer">
+          <div class="profile-task-time">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>${escapeHtml(t.time || 'Scheduled')}</span>
+          </div>
+          <span class="profile-task-status-pill ${isRescheduled ? 'rescheduled' : 'pending'}">
+            ${isRescheduled ? 'Rescheduled' : (isToday ? 'Due Today' : 'Pending')}
+          </span>
+        </div>
+      </div>
+    `;
+  });
+
+  mount.innerHTML = html;
+}
+
+function toggleTaskFromProfile(taskId) {
+  const task = state.tasks.find(t => String(t.id) === String(taskId));
+  if (!task) return;
+
+  task.completed = true;
+  task.status = 'done';
+
+  // If this task was tied to an assignment milestone, mark the milestone complete too
+  if (task.asgId && task.milestoneId) {
+    const asg = state.assignments.find(a => a.id === task.asgId);
+    if (asg && asg.milestones) {
+      const m = asg.milestones.find(item => item.id === task.milestoneId);
+      if (m) m.completed = true;
+      if (asg.milestones.every(item => item.completed)) {
+        asg.status = 'completed';
+        asg.statusLabel = 'Completed';
+      }
+    }
+  }
+
+  renderProfileScreen();
+  updateCapacityMetrics();
+  showToast(`Completed "${task.title.substring(0, 20)}..."`);
+}
 
 // Initialize on page load
 syncMilestonesToTaskList();
