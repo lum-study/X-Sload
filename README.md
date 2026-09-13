@@ -189,7 +189,7 @@ To understand how X-Sload operates under the hood, the system combines transpare
 
 ## 3. Design Prototype
 
-- **Prototype Link / Figma:** https://code-nection2026-git-master-lum-study.vercel.app/
+- **Prototype Link / Figma:** https://code-nection2026.vercel.app?_vercel_share=E3FvZ6TNvC5W9SQ7vPJnraIAvJSf2NPZ
 
 ### 3.1 Home & Workload Dashboard
 
