@@ -1,4 +1,4 @@
-![Logo](logo.png)
+![Logo](images/logo.png)
 # X-Sload by Xiao16
 
 - **Team Members:** Lum Siew Feng, Lum Shu Ying
@@ -175,7 +175,7 @@ To understand how X-Sload operates under the hood, the system combines transpare
 
 ### 2.2 Ideation Board
 
-[Ideation Board Link / Image]
+![Ideation Board](images/Ideation%20Board%20v1.png)
 
 ### 2.3 Mentor Consultation
 
@@ -295,7 +295,7 @@ To understand how X-Sload operates under the hood, the system combines transpare
 
 ### 5.2 Architectural Diagram
 
-![Architecture Diagram](ArchitectureDiagram.png)
+![Architecture Diagram](images/ArchitectureDiagram.png)
 
 ### 5.3 Build Plan and Scope
 
