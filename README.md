@@ -213,6 +213,7 @@ Following consultations with mentors (**Teng Wei Herr**, **Kueh Pang Teng**, and
 ---
 
 ## 3. Design Prototype
+*Notes: For better visualisation, can reduce the web browser to 80%.*
 
 - **Prototype Link / Figma:** https://code-nection2026.vercel.app?_vercel_share=E3FvZ6TNvC5W9SQ7vPJnraIAvJSf2NPZ
 
