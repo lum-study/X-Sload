@@ -1,9 +1,10 @@
-# [Project Name] by Xiao16
+![Logo](logo.png)
+# X-Sload by Xiao16
 
 - **Team Members:** Lum Siew Feng, Lum Shu Ying
 - **Problem Statement:** Stress & Workload Manager
-- **Video Presentation:** [Unlisted Youtube Link]
-- **Presentation Slides:** [Public Link]
+- **Video Presentation:** https://youtu.be/IXeF38os7f8
+- **Presentation Slides:** https://canva.link/ylovme5uvsnsd09
 
 ---
 
@@ -46,7 +47,102 @@ Our solution is an **AI-assisted student workload and capacity management mobile
 | **📅 AI Capacity-Aware Schedule Optimisation** | • Generates realistic, balanced schedules based on capacity limits rather than calendar packing.<br>• **Timetable & Energy-Aware Scheduling:** Cross-references uploaded academic timetables to ensure tasks are never assigned during scheduled classes, while matching high-difficulty tasks to user-defined peak-energy windows and light tasks to low-energy periods.<br>• **Intelligent Missed-Task Recovery:** Automatically detects uncompleted tasks and recalculates guilt-free recovery slots without stressful overdue alerts.<br>• Never makes silent or destructive calendar edits; all adjustments require student approval. |
 | **🔔 Smart Supportive Notifications**          | • Generates actionable, non-punitive reminders for upcoming milestones and recovery breaks.<br>• Early warnings when upcoming consecutive days exceed sustainable capacity thresholds.<br>• Device-local notifications to ensure privacy, zero latency, and minimal infrastructure overhead.                                                                                                                                                                                                                                                                                                                                               |
 
-### 1.5 References
+
+### 1.5 Detailed Functional Specifications & Workflow Mechanics
+
+To understand how X-Sload operates under the hood, the system combines transparent deterministic mathematical models with server-orchestrated LLM intelligence. Below is the detailed functional breakdown of each core module:
+
+---
+
+#### 1.5.1 AI-Powered Assignment Ingestion & Decomposition Pipeline
+- **Purpose:** Converts large, unstructured academic assignment briefs and rubrics into structured, manageable micro-tasks.
+- **Workflow & Processing Pipeline:**
+  1. **Document Ingestion:** The student uploads an assignment file (`PDF`, `DOCX`, or plain text prompt) through the Flutter client to Supabase Storage.
+  2. **Server-Side Extraction & Prompt Orchestration:** A Supabase Edge Function extracts text content and passes it with a structured system prompt to an LLM via OpenRouter.
+  3. **Atomic Decomposition:** The model parses key deliverables, grading criteria, and deadlines, decomposing the assignment into granular subtasks calibrated to **~1-hour atomic units**.
+  4. **Attribute Tagging:** Each generated task is enriched with:
+     - `title` & `description`: Clear actionable instructions.
+     - `estimated_duration`: Calibrated duration in hours ($h \approx 1.0\text{h}$).
+     - `difficulty_rating` ($k_{\text{diff}} \in [1, 5]$): Complexity score for cognitive load modeling.
+     - `milestone_dependency`: Logical sequencing (e.g., *Research $\to$ Draft $\to$ Revise $\to$ Submit*).
+  5. **Human-in-the-Loop Review:** The Flutter client presents an interactive preview modal where students retain full agency to add, edit, delete, reorder, or adjust durations before saving to the database.
+
+---
+
+#### 1.5.2 Whole-Life Capacity & Workload Mathematical Model
+- **Purpose:** Quantifies daily cognitive capacity, workload saturation, and burnout risk using transparent, explainable formulas rather than opaque "black-box" scores or medical claims.
+- **Formulas & Mathematical Logic:**
+  1. **Available Focus Capacity ($C_{\text{avail}}$):**
+     $$C_{\text{avail}}(d) = C_{\text{base}} - \sum_{i \in \text{Commitments}(d)} T_i$$
+     - **Initial Baseline ($C_{\text{base}}$):** Initially self-identified and set by the student during onboarding based on their perceived daily sustainable focus ceiling (e.g., 6.0–8.0 hours).
+     - **Longitudinal AI Calibration:** After several weeks or months of usage, the AI analyzes historical task completion velocity, carryover frequencies, and fatigue patterns to propose an empirically calibrated, realistic capacity value tailored to the student's actual pace (with user confirmation).
+     - **Fixed Commitments ($\sum T_i$):** Non-negotiable time blocks including university lectures, tutorial/lab slots, part-time job shifts, and scheduled routines.
+  2. **Workload Percentage ($W_{\%}$):**
+     $$W_{\%}(d) = \left( \frac{\sum_{j \in \text{Tasks}(d)} T_j}{C_{\text{avail}}(d)} \right) \times 100\%$$
+     *Measures the proportion of available capacity consumed by planned tasks on day $d$.*
+  3. **Capacity Risk Indicator ($R_{\text{capacity}}$):**
+     A composite multi-factor risk index ($0 - 100\%$) computed from four key operational factors:
+     $$R_{\text{capacity}} = w_1 \cdot f_{\text{deadline}} + w_2 \cdot f_{\text{consecutive}} + w_3 \cdot f_{\text{carryover}} + w_4 \cdot f_{\text{exceedance}}$$
+     - **Deadline Pressure ($f_{\text{deadline}}$):** Evaluates density and weight of deliverables due within the next $48 - 72$ hours.
+     - **Consecutive High-Load Days ($f_{\text{consecutive}}$):** Penalizes unbroken stretches ($\ge 3$ days) where $W_{\%} > 85\%$.
+     - **Task Carryover ($f_{\text{carryover}}$):** Accounts for delayed or overdue tasks rolling over into subsequent days.
+     - **Capacity Exceedance ($f_{\text{exceedance}}$):** Activates when daily planned hours exceed $100\%$ of available capacity ($W_{\%} > 100\%$).
+  4. **Risk Classification Thresholds:**
+     - 🟢 **Low Risk (0–50%):** Balanced workload with healthy buffer for unforeseen interruptions.
+     - 🟡 **Medium Risk (51–80%):** Heavy but manageable load; caution advised before accepting new tasks.
+     - 🔴 **High Risk (81–100%):** Critical overload hazard; triggers proactive rebalancing suggestions.
+
+---
+
+#### 1.5.3 Intelligent Task & Commitment Insertion ("Should I Say Yes?" Impact Simulation)
+- **Purpose:** Prevents accidental overcommitment by instantly showing students the ripple effect of taking on new tasks before they commit.
+- **Workflow & Decision Matrix:**
+  1. **Multimodal Task Entry:** Students input tasks via Speech-to-Text (STT voice capture) or manual form entry.
+  2. **Automated Parsing:** Extracts task title, due date, duration, category (Academic, Work, Personal, Social), and difficulty.
+  3. **Real-Time Delta Simulation:**
+     $$\Delta W = W_{\%,\text{projected}} - W_{\%,\text{current}}$$
+     Calculates projected workload across target and surrounding days without modifying the active database schedule.
+  4. **Actionable Decision Options:**
+     - **Option A — Accept:** Displayed when projected load remains safe ($W_{\%,\text{projected}} \le 80\%$).
+     - **Option B — Accept with Modified Duration:** Suggests reducing task duration or scoping down to fit within remaining daily capacity.
+     - **Option C — Reschedule / Shift:** Recommends alternative upcoming days with low workload to preserve healthy buffers.
+
+---
+
+#### 1.5.4 AI Group Assignment Distribution & Timetable Clash Avoidance
+- **Purpose:** Resolves group work coordination friction and prevents unfair workload division while respecting peer personal capacity.
+- **Workflow & Algorithmic Logic:**
+  1. **Complexity-Weighted Workload Equalization:**
+     $$\text{Effort}(T) = \text{Duration}(T) \times k_{\text{diff}}(T)$$
+     The balancing engine distributes assignment milestones to minimize variance across member effort allocations:
+     $$\min \sum_{m \in \text{Members}} \left( \text{Effort}_m - \overline{\text{Effort}} \right)^2$$
+  2. **Academic Timetable Clash Prevention:** Cross-references uploaded student class schedules (lectures, labs, tutorials) to ensure group tasks and milestone deadlines are never scheduled during conflicting instructional slots.
+  3. **Dual-Lens Transparency:**
+     - **Assignment Fairness:** Visualizes each member's percentage contribution to the specific group project.
+     - **Personal Capacity:** Visualizes each member's overall real-life workload status (including their other individual subjects and external commitments) so teams make empathetic, feasible distribution decisions.
+
+---
+
+#### 1.5.5 AI Capacity-Aware Schedule Optimisation & Guilt-Free Recovery
+- **Purpose:** Dynamically adapts schedules when disruptions occur, replacing punitive overdue notices with supportive recovery paths.
+- **Workflow & Algorithmic Logic:**
+  1. **Energy-Aware Slot Matching:**
+     - High-difficulty tasks ($k_{\text{diff}} \ge 4$) are automatically aligned with user-configured peak-energy focus windows (e.g., morning focus blocks).
+     - Low-cognitive tasks ($k_{\text{diff}} \le 2$) are routed to lower energy periods.
+  2. **Proactive Workload Rebalancing:** When a day exceeds $100\%$ capacity or triggers High Risk, the engine proposes non-destructive forward-shift options into lighter days while protecting fixed project deadlines.
+  3. **Guilt-Free Missed-Task Recovery:** Uncompleted tasks are detected without stress-inducing red badges or broken streak penalties; one-tap recovery smoothly redistributes overdue items into available buffer slots.
+
+---
+
+#### 1.5.6 Smart Supportive Notifications
+- **Purpose:** Delivers timely, non-punitive nudges to guide sustainable study habits.
+- **Delivery Model:**
+  - **Local Device Notifications:** Scheduled and triggered entirely on the user's mobile device for zero latency, offline reliability, and enhanced privacy.
+  - **Context-Aware Alerts:** Triggers alerts for consecutive high-load streaks, approaching milestone start times, and recommended recovery breaks.
+
+---
+
+### 1.6 References
 
 - [Barbayannis, G. et al. (2022). Academic Stress and Mental Well-Being in College Students: Correlations, Affected Groups, and COVID-19. PMC9169886.](https://pmc.ncbi.nlm.nih.gov/articles/PMC9169886/)
 - [Beyond Blue: How to deal with assignment & university anxiety](https://forums.beyondblue.org.au/t5/anxiety/how-to-deal-with-assignment-university-anxiety/td-p/622204)
@@ -188,8 +284,8 @@ Our solution is an **AI-assisted student workload and capacity management mobile
 | **Database**                         | **Supabase PostgreSQL**                                        | Stores structured application data across core tables: `profiles`, `assignments`, `tasks`, `commitments`, `groups`, `group_members`, and `group_tasks`. PostgreSQL is suitable for relational relationships and complex queries.                  |
 | **File Storage**                     | **Supabase Storage**                                           | Stores assignment-related files, uploaded academic timetables, and other user-uploaded resources separately from the relational database.                                                                                                         |
 | **Real-time Data**                   | **Supabase Realtime**                                          | Provides real-time updates when database records change, allowing workload, task, and group collaboration changes to be reflected in the mobile application without continuous polling.                                                           |
-| **AI Orchestration**                 | **Supabase Edge Functions + LLM API**                          | Edge Functions act as the application layer for communicating with the LLM. This keeps AI API credentials away from the mobile application and allows prompts, validation, and business rules to be controlled server-side.                       |
-| **AI / Recommendation**              | **LLM API**                                                    | Supports AI-based task breakdown, academic timetable clash analysis, workload planning, commitment analysis, and personalised workload-management recommendations.                                                                                |
+| **AI Orchestration**                 | **Supabase Edge Functions + OpenRouter (LLM Gateway)**        | Edge Functions act as the secure application layer connecting to AI models via OpenRouter. This keeps AI API credentials away from the mobile client and allows prompt templates, validation, and business rules to be enforced server-side. |
+| **AI / Recommendation**              | **LLM API (via OpenRouter)**                                   | Powers AI-based task breakdown, academic timetable clash analysis, workload planning, commitment impact analysis, and personalised workload-management recommendations.                                                                         |
 | **Speech-to-Text**                   | **Speech-to-Text API**                                         | Converts spoken task descriptions into text so students can create tasks through voice input. The request can be routed through the AI orchestration layer where appropriate.                                                                     |
 | **Charts / Visualisation**           | **Flutter Charting Library** _(e.g., fl_chart)_                | Visualises workload distribution, weekly workload/capacity trends, task progress, and overload reports.                                                                                                                                           |
 | **Notifications**                    | **Device / Local Notifications**                               | Triggers reminders and alerts directly on the student's device for deadlines, planned tasks, and workload-related events. For a prototype where notifications are primarily device-triggered, a separate FCM backend is not necessarily required. |
