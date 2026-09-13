@@ -350,7 +350,76 @@ Following consultations with mentors (**Teng Wei Herr**, **Kueh Pang Teng**, and
 
 ---
 
-## 6. Prototype Demonstration & Interaction Video
+## 6. Frequently Asked Questions (FAQ)
+
+### Q1: What happens if the LLM makes a mistake or greatly underestimates the workload of an assignment? For example, what if a 30-hour research project is broken into only three 1-hour tasks? Won’t this give students a false sense of security?
+
+We do not fully trust the AI to make the final decision. The AI only suggests how the assignment can be broken down.
+
+* **Human-in-the-Loop Review:** Before the tasks are added to the system, the student can review them. They can change the estimated time, edit the tasks, or delete them if they are not suitable.
+* **Longitudinal Calibration:** The system also learns from the student’s actual performance over time. For example, if the AI keeps estimating a task to take 1 hour but the student usually takes 3 hours, the system uses this historical velocity to improve future estimates.
+
+In short, we combine **AI suggestions, student review, and real user data** instead of relying on the AI alone.
+
+---
+
+### Q2: What stops a student from gaming the system? For example, what if they set their capacity to 16 hours a day or mark every task as Difficulty 1 to avoid stress warnings?
+
+X-Sload is a personal capacity management tool, not a competitive platform, so there is no incentive or benefit to gaming the system.
+
+However, the system also monitors the student’s actual behavior:
+* If a student sets their daily capacity to 16 hours but historically completes only 5 hours of work, the system detects the discrepancy between planned and actual output velocity.
+* It proactively suggests that the student adjust their capacity baseline ($C_{\text{base}}$) to a realistic, sustainable threshold.
+
+This ensures the system does not merely rely on self-reported inputs, but actively grounds itself in **empirical student execution patterns**.
+
+---
+
+### Q3: You claim to reduce stress, but seeing a big red “High Risk” warning might actually make students panic. How do you prevent the dashboard from becoming a source of anxiety?
+
+We designed X-Sload so that warnings are explanatory and actionable rather than alarming or punitive:
+
+* **Transparent "Why this risk?" Explanation:** When a high-risk warning appears, clicking the risk indicator explains the underlying root causes (e.g., two large deliverables due in 48 hours with multiple rollover tasks) rather than showing a vague, frightening score.
+* **Actionable Rebalancing:** Instead of just declaring “You are overloaded,” the system provides one-tap non-destructive rebalancing options (e.g., shifting non-urgent tasks into lighter upcoming days).
+* **No Guilt Mechanics:** We deliberately omitted anxiety-inducing features like streak counters, broken-streak penalties, and red overdue badges.
+
+Our goal is to transform the student mindset from **“I am overwhelmed”** to **“I understand the bottleneck and I have a clear path to fix it.”**
+
+---
+
+### Q4: Uploading PDFs, setting capacity, and uploading timetables takes extra effort. Students are already overwhelmed, so won’t this make them abandon the app?
+
+We designed the onboarding and user interactions to be progressive and low-friction:
+
+* **Progressive Onboarding:** Students do not have to configure everything upfront. Core features like **"Should I Say Yes?"** work immediately with default capacity baselines.
+* **Net Time Savings:** Uploading a single assignment brief (PDF/DOCX) automatically parses and creates 10+ subtasks in seconds, saving students significantly more time than manual task entry.
+* **One-Time Timetable Setup:** Academic timetables are uploaded once per semester, after which the system automatically defends lecture/tutorial slots against task collision.
+
+By delivering immediate value at each interaction step, the system ensures that minimal setup effort **yields substantial time-saving returns.**
+
+---
+
+### Q5: University students are price-sensitive and may not want to pay for another productivity app. How can X-Sload become a sustainable business after the hackathon?
+
+We do not expect individual students to be the primary paying customers.
+
+* **B2B2C Institutional Model:** Our long-term commercialization strategy targets universities, student wellbeing departments, and academic counseling centers.
+* **Aligned Institutional Incentives:** Higher education institutions already invest heavily in student mental health, academic performance, and dropout retention. X-Sload provides an institutional tool to identify workload anomalies early.
+* **Zero Cost to Students:** Under this model, students receive full access to premium features funded by university wellbeing initiatives.
+
+---
+
+### Q6: Why build a standalone app instead of making a plugin for Canvas, Moodle, or Google Calendar?
+
+We evaluated LMS and calendar plugins during ideation, but deliberately scoped X-Sload as a standalone mobile-first application for the MVP:
+
+* **Whole-Life Workload Visibility:** Existing platforms only capture isolated slices of life—Canvas/Moodle only sees university coursework, while Google Calendar only sees scheduled meetings. Neither captures part-time jobs, social plans, personal responsibilities, and cognitive effort.
+* **Unified Capacity Dashboard:** X-Sload integrates all life spheres into a single pane of glass, which is impossible inside a single-course LMS plugin.
+* **Future Ecosystem Integration:** While starting standalone for speed and control, two-way sync integrations with Canvas, Moodle, and Google Calendar remain part of the post-MVP roadmap.
+
+---
+
+## 7. Prototype Demonstration & Interaction Video
 
 Below is the recorded interactive demonstration of the **X-Sload** prototype:
 
