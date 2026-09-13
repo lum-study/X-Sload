@@ -175,7 +175,32 @@ To understand how X-Sload operates under the hood, the system combines transpare
 
 ### 2.2 Ideation Board
 
-![Ideation Board](images/Ideation%20Board%20v1.png)
+The ideation process evolved across two main iterations—transitioning from divergent brainstorming into a tightly scoped, production-grade system architecture based on mentor feedback and technical feasibility.
+
+---
+
+#### 2.2.1 Ideation Board v1 — Initial Exploration & Divergent Brainstorming
+
+The **Version 1 Ideation Board** served as an initial broad exploration of university student stressors and potential technical interventions. It captured unfiltered possibilities across two primary pain points: **"Don't Know How Much They Are Carrying"** and **"Always Say Yes"**.
+
+![Ideation Board v1](images/Ideation%20Board%20v1.png)
+
+- **Key Focus of v1:**
+  - **Wide-Angle Exploration:** Included disparate concepts such as daily mood/stress check-ins, sleep tracking via background phone usage sensors, mental health logging, gamification (coins, profile decoration, virtual pets, streaks), and weekly retrospective reports.
+  - **Conversational Task Simulation:** Explored an open-ended conversational AI chatbot to evaluate whether a student should accept new commitments ("Should I Add This Task").
+  - **Initial Pipeline Concept:** Laid the early foundation for breaking large assignments into smaller milestones and calculating basic workload before/after adding tasks.
+
+---
+
+#### 2.2.2 Ideation Board v2 — Detailed Capacity-Aware Implementation Plan
+
+Following consultations with mentors (**Teng Wei Herr**, **Kueh Pang Teng**, and **Looi Wei En**), the ideation underwent significant convergence. Unviable, high-friction, and stress-inducing features (e.g., manual mood journals, broken streak penalties, generic chatbots, invasive sleep sensors) were eliminated. 
+
+**Version 2** establishes a robust, explainable, and deterministic **Capacity-Aware Workload Management System** built around 6 core operational pillars:
+
+![Ideation Board v2](images/Ideation%20Board%20v2.png)
+
+---
 
 ### 2.3 Mentor Consultation
 
